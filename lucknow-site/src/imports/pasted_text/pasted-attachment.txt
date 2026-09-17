@@ -1,0 +1,1189 @@
+You are a senior product designer, UX architect, UI designer and frontend design-system specialist.
+
+Design the official destination/place page for D360 (Darshan360), a travel and tourism discovery platform by EduFutura Technologies Pvt Ltd.
+
+IMPORTANT PRODUCT CONCEPT
+
+D360 is not a generic hotel-booking website.
+
+D360 helps users discover:
+- unexplored places
+- underrated destinations
+- heritage locations
+- historical places
+- cultural destinations
+- natural destinations
+- local experiences
+- hidden gems
+- food and local culture
+- nearby destinations
+- complete trip possibilities
+
+The same destination-page UI will eventually be reused for hundreds or thousands of destinations.
+
+Examples:
+Agra
+Gwalior
+Kanpur
+Mumbai
+Delhi
+Panvel
+Darjeeling
+Puducherry
+small towns
+villages
+forts
+waterfalls
+temples
+heritage sites
+natural attractions
+
+Therefore:
+
+DO NOT design Agra as a one-off page.
+
+Design a UNIVERSAL D360 DESTINATION PAGE SYSTEM where the UI remains identical and only the destination data changes.
+
+Use AGRA, UTTAR PRADESH as the example destination.
+
+==================================================
+TECHNOLOGY
+==================================================
+
+Frontend:
+Next.js
+React
+JavaScript / TypeScript compatible
+
+Styling:
+CSS / CSS Modules
+
+Architecture:
+Reusable components
+Data-driven destination pages
+
+The design must be implementable directly in Next.js.
+
+Do not create unnecessarily complicated visual effects that are difficult to implement.
+
+==================================================
+DESIGN PHILOSOPHY
+==================================================
+
+Create a:
+
+- premium
+- modern
+- highly visual
+- professional
+- travel-focused
+- human-designed
+- editorial
+- immersive
+- trustworthy
+- engaging
+- user-friendly
+
+interface.
+
+IMPORTANT:
+
+The website must NOT look AI-generated.
+
+Avoid:
+- excessive gradients
+- random glassmorphism
+- excessive glowing effects
+- generic AI-dashboard aesthetics
+- excessive rounded cards
+- neon colors
+- unnecessary animations
+- overly futuristic UI
+- template-looking layouts
+
+The design should feel like a premium modern travel publication + exploration platform.
+
+Use strong typography, photography, whitespace, hierarchy, subtle borders, refined cards and carefully controlled colors.
+
+The destination should remain the visual hero.
+
+==================================================
+RESPONSIVE DESIGN
+==================================================
+
+Design BOTH:
+
+1. Desktop / PC
+2. Mobile
+
+Desktop:
+1440px primary design width.
+
+Also ensure the system works at:
+1280px
+1024px
+768px
+
+Mobile:
+390px primary design width.
+
+Also ensure it works at:
+375px
+430px
+
+Do not simply shrink the desktop design.
+
+Create a proper mobile information hierarchy.
+
+==================================================
+PAGE STRUCTURE
+==================================================
+
+Create the following complete page:
+
+D360 DESTINATION PAGE
+Example:
+AGRA, UTTAR PRADESH
+
+--------------------------------------------------
+1. HEADER / NAVIGATION
+--------------------------------------------------
+
+Desktop navigation:
+
+D360 logo
+Explore
+Destinations
+Hidden Gems
+Plan a Trip
+Experiences
+
+Right side:
+Search
+Saved
+Profile
+
+Primary CTA:
+"Explore Places"
+
+Header should be clean and minimal.
+
+On mobile:
+D360 logo
+Search
+Menu
+
+Sticky header behavior may be represented visually.
+
+--------------------------------------------------
+2. BREADCRUMB
+--------------------------------------------------
+
+Example:
+
+India / Uttar Pradesh / Agra
+
+Small, subtle typography.
+
+Do not make breadcrumbs visually dominant.
+
+--------------------------------------------------
+3. HERO SECTION
+--------------------------------------------------
+
+This is the most important section.
+
+Use a cinematic destination video as the primary visual.
+
+Example:
+Agra aerial / Taj Mahal / Yamuna / old-city visuals.
+
+Hero should occupy approximately:
+70–85vh on desktop.
+
+Structure:
+
+FULL-WIDTH VIDEO
+
+Overlay:
+
+Agra
+
+Uttar Pradesh, India
+
+"Where Mughal history, living culture and timeless architecture meet."
+
+Tags:
+
+HERITAGE
+HISTORICAL
+CULTURAL
+
+Actions:
+
+Explore Agra
+Save Place
+Ask D360
+
+Include a subtle:
+"Scroll to explore"
+
+Video controls:
+Mute
+Play/Pause
+
+Do not cover the video with too much text.
+
+Use a dark readability overlay only where necessary.
+
+Mobile:
+Use a shorter hero height around 65–75vh.
+
+Ensure title remains readable.
+
+--------------------------------------------------
+4. QUICK INFORMATION STRIP
+--------------------------------------------------
+
+Immediately below hero.
+
+Create a clean information strip.
+
+Example:
+
+BEST TIME
+Oct – Mar
+
+IDEAL DURATION
+2–3 Days
+
+BUDGET
+₹₹
+
+DESTINATION TYPE
+Heritage City
+
+DIFFICULTY
+Easy
+
+DISTANCE
+~200 km from Delhi
+
+Use icons carefully.
+
+Do NOT make this look like a dashboard.
+
+Desktop:
+horizontal layout.
+
+Mobile:
+2-column or horizontal scroll.
+
+--------------------------------------------------
+5. WHY VISIT D360 SECTION
+--------------------------------------------------
+
+Heading:
+
+Why Agra?
+
+Short editorial paragraph.
+
+Example:
+
+"Agra is more than the Taj Mahal. Beyond its iconic monument lies a city shaped by Mughal architecture, traditional crafts, local food and centuries of living history."
+
+Then introduce:
+
+D360 DISCOVERY SCORE
+
+Show a visually elegant score.
+
+Example:
+
+8.7 / 10
+
+Categories:
+
+Uniqueness
+Historical Significance
+Cultural Value
+Crowd Level
+Local Experience
+
+Do not use a complicated radar chart.
+
+Prefer elegant horizontal score indicators.
+
+--------------------------------------------------
+6. DESTINATION STORY
+--------------------------------------------------
+
+Create an editorial-style section.
+
+Heading:
+
+The Story of Agra
+
+Large paragraph + supporting image.
+
+Use:
+Read more
+
+The initial content should be short.
+
+Long content should be expandable.
+
+Design this section like a premium travel magazine rather than a Wikipedia page.
+
+--------------------------------------------------
+7. HISTORY & HERITAGE
+--------------------------------------------------
+
+Create a visual timeline.
+
+Heading:
+
+A City Written in History
+
+Timeline:
+
+1504
+Early Lodi period
+
+1565
+Akbar establishes Agra Fort
+
+1632
+Construction of Taj Mahal begins
+
+1653
+Taj Mahal completed
+
+Modern era
+Agra becomes a major heritage destination
+
+Use cards/timeline nodes.
+
+Allow:
+View Full History
+
+This section must be reusable.
+
+For destinations without meaningful historical information:
+hide or replace this section automatically.
+
+--------------------------------------------------
+8. CULTURE & SIGNIFICANCE
+--------------------------------------------------
+
+Create 3–4 visual cards.
+
+Examples:
+
+Mughal Heritage
+Traditional Crafts
+Festivals
+Local Culture
+
+Each card:
+
+image
+title
+short description
+
+Keep cards visually elegant.
+
+--------------------------------------------------
+9. FOOD — "TASTE OF AGRA"
+--------------------------------------------------
+
+This should be a major D360 section.
+
+Heading:
+
+Taste of Agra
+
+Subtitle:
+"Don't leave without trying these."
+
+Create horizontal food cards.
+
+Example:
+
+Agra Petha
+Bedai
+Mughlai Cuisine
+Dahi Bhalla
+
+Each card:
+
+food image
+name
+short description
+category
+approximate price
+
+Use horizontal scrolling on mobile.
+
+Include:
+
+Explore Local Food
+
+--------------------------------------------------
+10. PLACES TO EXPLORE
+--------------------------------------------------
+
+This is one of the most important sections.
+
+Heading:
+
+Places to Explore
+
+Tabs:
+
+All
+Heritage
+Hidden Gems
+Nature
+Culture
+Food
+
+Create reusable destination attraction cards.
+
+Each card:
+
+Image/video
+Place name
+Category
+Short description
+Recommended duration
+D360 score
+Explore button
+Save icon
+
+Example:
+
+Taj Mahal
+Agra Fort
+Mehtab Bagh
+Itimad-ud-Daulah
+Akbar's Tomb
+
+Cards should look premium but compact.
+
+--------------------------------------------------
+11. HIDDEN GEMS
+--------------------------------------------------
+
+D360's major differentiator.
+
+Heading:
+
+Beyond the Famous
+
+Subtitle:
+
+"Places most visitors miss."
+
+Use large visual cards.
+
+Include:
+Hidden location
+Why it matters
+Distance
+Estimated visit duration
+
+Create a strong visual distinction from ordinary tourist attractions.
+
+--------------------------------------------------
+12. THINGS TO DO
+--------------------------------------------------
+
+Create activity cards.
+
+Examples:
+
+Heritage Walk
+Local Food Trail
+Sunset at Mehtab Bagh
+Mughal Architecture Trail
+Craft Workshop
+
+Each:
+
+Activity
+Duration
+Cost indicator
+Difficulty
+Best time
+
+--------------------------------------------------
+13. NEARBY PLACES
+--------------------------------------------------
+
+Heading:
+
+Keep Exploring
+
+Create distance filters:
+
+5 km
+10 km
+25 km
+50 km
+100 km
+
+Cards should show:
+
+Destination
+Distance
+Type
+Travel time
+Image
+
+Example:
+
+Keetham Lake
+Fatehpur Sikri
+Mathura
+
+This should eventually be powered by geospatial database data.
+
+--------------------------------------------------
+14. HOW TO REACH
+--------------------------------------------------
+
+Create three elegant transport cards:
+
+AIR
+Nearest airport
+
+RAIL
+Nearest railway station
+
+ROAD
+Highway / road connectivity
+
+Show:
+
+distance
+approximate travel time
+transport icon
+
+--------------------------------------------------
+15. WHERE TO STAY
+--------------------------------------------------
+
+Create categories:
+
+Budget
+Mid-range
+Luxury
+Heritage
+Homestay
+
+Do not turn this into a booking website yet.
+
+Focus on destination-level accommodation guidance.
+
+--------------------------------------------------
+16. BEST TIME TO VISIT
+--------------------------------------------------
+
+Create a 12-month visual calendar.
+
+Months:
+
+Jan Feb Mar Apr May Jun
+Jul Aug Sep Oct Nov Dec
+
+Use three states:
+
+Ideal
+Good
+Avoid
+
+Keep the visual extremely simple.
+
+--------------------------------------------------
+17. BUDGET
+--------------------------------------------------
+
+Create a simple trip-cost breakdown.
+
+Example:
+
+Budget Traveler
+₹1,500–₹2,500/day
+
+Comfort
+₹3,000–₹6,000/day
+
+Premium
+₹8,000+/day
+
+Break down:
+
+Food
+Transport
+Stay
+Activities
+Entry Fees
+
+Include:
+
+Plan My Budget
+
+--------------------------------------------------
+18. ITINERARIES
+--------------------------------------------------
+
+Heading:
+
+Plan Your Agra Trip
+
+Tabs:
+
+1 Day
+2 Days
+3 Days
+
+Create a timeline.
+
+Example:
+
+DAY 1
+
+Morning
+Taj Mahal
+
+Afternoon
+Agra Fort
+
+Evening
+Mehtab Bagh
+
+Show:
+
+time
+place
+duration
+travel distance
+
+CTA:
+
+Use This Plan
+
+--------------------------------------------------
+19. LOCAL EXPERIENCES
+--------------------------------------------------
+
+Create experience cards.
+
+Examples:
+
+Marble Inlay Workshop
+Heritage Walk
+Local Food Tour
+Traditional Craft Experience
+
+Include:
+
+duration
+price
+host
+category
+
+--------------------------------------------------
+20. INTERACTIVE MAP
+--------------------------------------------------
+
+Large map section.
+
+Show markers for:
+
+Attractions
+Food
+Hidden Gems
+Stay
+Experiences
+
+Add category filters.
+
+Add:
+
+View Full Map
+
+Design the UI as a real product map interface.
+
+--------------------------------------------------
+21. AI TRAVEL ASSISTANT
+--------------------------------------------------
+
+Do NOT make this section look like a generic AI chatbot.
+
+Brand it as:
+
+Ask D360
+
+Example prompt chips:
+
+"What should I see in 1 day?"
+"Best food near me?"
+"What is the history of Agra?"
+"Show me hidden places"
+"Plan a budget trip"
+
+Include voice interaction.
+
+Example:
+
+Ask in Hindi
+
+"Agra mein Taj Mahal ke alawa kya dekh sakta hoon?"
+
+Design a refined assistant panel.
+
+The AI should feel like part of the travel experience, not an AI product dashboard.
+
+--------------------------------------------------
+22. COMMUNITY / TRAVELER STORIES
+--------------------------------------------------
+
+Heading:
+
+Travelers of D360
+
+Show:
+
+reviews
+traveler photographs
+short stories
+tips
+
+Create editorial-looking user content cards.
+
+--------------------------------------------------
+23. PRACTICAL INFORMATION
+--------------------------------------------------
+
+Accordion sections:
+
+Safety
+Local Transport
+Photography Rules
+Dress & Etiquette
+Emergency Information
+Travel Tips
+
+Keep this compact.
+
+--------------------------------------------------
+24. SOURCES / TRUST
+--------------------------------------------------
+
+At the bottom:
+
+Information Sources
+Official Tourism Sources
+Historical Sources
+Last Verified
+
+Include:
+
+"Last verified: [date]"
+
+Make the platform feel trustworthy.
+
+--------------------------------------------------
+25. FOOTER
+--------------------------------------------------
+
+D360
+
+Discover Beyond the Usual.
+
+Explore
+Destinations
+Hidden Gems
+Plan
+Experiences
+About
+Contact
+
+==================================================
+REUSABLE PLACE CARD
+==================================================
+
+IMPORTANT:
+
+Create ONE reusable attraction/place card component.
+
+This component must work for:
+
+Taj Mahal
+Gwalior Fort
+Keetham Lake
+A village
+A temple
+A waterfall
+A museum
+A hidden heritage site
+
+Card structure:
+
+MEDIA
+↓
+Category Badge
+↓
+Place Name
+↓
+Location
+↓
+1-line description
+↓
+Meta:
+Duration | Distance | D360 Score
+↓
+Explore
+Save
+
+The card must not contain destination-specific layout logic.
+
+Only DATA changes.
+
+==================================================
+DATA-DRIVEN ARCHITECTURE
+==================================================
+
+The UI must be designed assuming the destination is loaded from JSON.
+
+Create a sample destination data object:
+
+destination = {
+  id,
+  slug,
+  name,
+  localName,
+  destinationType,
+  country,
+  state,
+  district,
+  coordinates,
+  shortDescription,
+  longDescription,
+  hero,
+  quickFacts,
+  discoveryScore,
+  history,
+  culture,
+  food,
+  attractions,
+  hiddenGems,
+  thingsToDo,
+  nearbyPlaces,
+  travel,
+  stay,
+  bestTime,
+  budget,
+  itineraries,
+  experiences,
+  map,
+  aiPrompts,
+  reviews,
+  sources
+}
+
+Use realistic sample data for AGRA.
+
+The design must make it obvious that:
+
+AGRA DATA
+and
+GWALIOR DATA
+
+can use exactly the same UI.
+
+==================================================
+CSS / DESIGN SYSTEM
+==================================================
+
+Create a reusable CSS design system.
+
+Define:
+
+CSS variables:
+
+--d360-primary
+--d360-secondary
+--d360-background
+--d360-surface
+--d360-text
+--d360-muted
+--d360-border
+--d360-radius-sm
+--d360-radius-md
+--d360-radius-lg
+--d360-shadow
+--d360-container
+--d360-spacing
+
+Typography system:
+
+Display
+H1
+H2
+H3
+Body
+Small
+Caption
+
+Use a professional modern font.
+
+Typography must feel premium and readable.
+
+Do not use excessive font weights.
+
+Spacing must follow a consistent 8px-based system.
+
+==================================================
+NEXT.JS COMPONENT ARCHITECTURE
+==================================================
+
+Show the suggested component structure:
+
+app/
+  destinations/
+    [slug]/
+      page.tsx
+
+components/
+  destination/
+    DestinationHero
+    QuickFacts
+    DiscoveryScore
+    DestinationStory
+    HistoryTimeline
+    CultureGrid
+    FoodCarousel
+    AttractionGrid
+    PlaceCard
+    HiddenGems
+    ThingsToDo
+    NearbyPlaces
+    TravelInfo
+    StayGuide
+    BestTime
+    BudgetGuide
+    Itinerary
+    Experiences
+    DestinationMap
+    AskD360
+    CommunityStories
+    PracticalInfo
+    Sources
+
+data/
+  destinations/
+    agra.json
+    gwalior.json
+
+styles/
+  d360-destination.css
+
+The same components must render every destination.
+
+==================================================
+CSS OUTPUT
+==================================================
+
+Provide production-ready CSS structure for:
+
+- page container
+- hero
+- responsive typography
+- cards
+- grids
+- horizontal carousels
+- buttons
+- badges
+- quick-fact strip
+- timeline
+- food cards
+- attraction cards
+- nearby cards
+- map section
+- AI section
+- mobile navigation
+- responsive breakpoints
+
+The CSS must be reusable across every D360 destination.
+
+Do not create CSS specifically named:
+
+.agra-card
+
+Instead use:
+
+.destination-card
+.food-card
+.attraction-card
+.nearby-card
+
+etc.
+
+==================================================
+JSON OUTPUT
+==================================================
+
+Create a complete example:
+
+agra.json
+
+Use structured data.
+
+Do not put large paragraphs unnecessarily into the JSON.
+
+Use arrays and objects where appropriate.
+
+Example structure:
+
+{
+  "id": "agra",
+  "name": "Agra",
+  "state": "Uttar Pradesh",
+  "destinationType": "Heritage City",
+  "hero": {
+    "video": "...",
+    "poster": "..."
+  },
+  "quickFacts": {
+    "bestTime": "...",
+    "duration": "...",
+    "budget": "..."
+  },
+  "attractions": [],
+  "food": [],
+  "nearbyPlaces": []
+}
+
+Make the schema scalable.
+
+==================================================
+FIGMA DELIVERABLES
+==================================================
+
+Create these Figma frames:
+
+01 — Desktop Destination Page
+1440 × 3000+ px
+
+02 — Mobile Destination Page
+390 × 8440+ px
+
+03 — Component Library
+
+04 — Place Card Variations
+
+05 — Responsive States
+
+06 — Typography & Color System
+
+07 — Interaction States
+
+==================================================
+INTERACTION STATES
+==================================================
+
+Show:
+
+Default
+Hover
+Active
+Selected
+Saved
+Expanded
+Loading
+Empty
+
+For mobile:
+
+Tap interactions
+Horizontal scrolling
+Accordion
+Bottom sheet
+Sticky CTA
+
+==================================================
+ACCESSIBILITY
+==================================================
+
+Design with:
+
+WCAG-aware contrast
+Readable font sizes
+Clear buttons
+Visible focus states
+Accessible labels
+Logical hierarchy
+
+Do not sacrifice accessibility for visual effects.
+
+==================================================
+FINAL DESIGN GOAL
+==================================================
+
+The final result should look like a real production-ready travel platform.
+
+It should communicate:
+
+DISCOVER
+EXPLORE
+UNDERSTAND
+PLAN
+EXPERIENCE
+
+D360 should feel different from generic travel websites.
+
+The website's strongest visual identity should come from:
+
+1. Destination storytelling
+2. Cinematic visuals
+3. Hidden-gem discovery
+4. Local culture
+5. Food
+6. History
+7. Nearby exploration
+8. Intelligent trip planning
+
+The final design must be:
+
+PREMIUM
+HUMAN
+TRUSTWORTHY
+FAST
+RESPONSIVE
+EDITORIAL
+IMMERSIVE
+EASY TO USE
+
+Most importantly:
+
+BUILD ONE UNIVERSAL DESTINATION UI.
+
+AGRA IS ONLY THE DATA EXAMPLE.
+
+The same components and CSS must work without redesign for:
+
+Gwalior
+Kanpur
+Mumbai
+Delhi
+Darjeeling
+Puducherry
+a village
+a fort
+a waterfall
+a temple
+or any future D360 destination.
