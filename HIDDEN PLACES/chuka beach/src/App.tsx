@@ -2,158 +2,30 @@ import { useState, useRef, useEffect } from 'react'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-export interface QuickFact {
-  bestTime: string
-  duration: string
-  budget: string
-  destinationType: string
-  difficulty: string
-  distance: string
-}
+interface QuickFact { bestTime: string; duration: string; budget: string; destinationType: string; difficulty: string; distance: string }
+interface ScoreCategory { name: string; score: number }
+interface DiscoveryScore { overall: number; categories: ScoreCategory[] }
+interface TimelineEntry { year: string; event: string; era: string }
+interface CultureCard { title: string; description: string; image: string }
+interface FoodItem { name: string; description: string; category: string; price: string; image: string }
+interface Attraction { id: string; name: string; category: string; description: string; duration: string; distance: string; score: number; image: string }
+interface HiddenGem { name: string; why: string; distance: string; duration: string; image: string }
+interface Activity { activity: string; duration: string; cost: string; difficulty: string; bestTime: string; image: string }
+interface NearbyPlace { name: string; distance: string; type: string; travelTime: string; image: string }
+interface TransportOption { airport?: string; station?: string; highway?: string; distance: string; time: string }
+interface StayCategory { type: string; range: string; options: string[] }
+interface MonthStatus { month: string; status: 'ideal' | 'good' | 'avoid' }
+interface BudgetBreakdown { category: string; amount: string }
+interface BudgetTier { tier: string; perDay: string; breakdown: BudgetBreakdown[] }
+interface ScheduleItem { time: string; place: string; duration: string; distance?: string }
+interface DayPlan { day: number; schedule: ScheduleItem[] }
+interface Experience { title: string; duration: string; price: string; category: string; image: string }
+interface Review { name: string; location: string; text: string; rating: number; image: string; date: string }
+interface Sources { official: string[]; historical: string[]; lastVerified: string }
 
-export interface ScoreCategory {
-  name: string
-  score: number
-}
-
-export interface DiscoveryScore {
-  overall: number
-  categories: ScoreCategory[]
-}
-
-export interface TimelineEntry {
-  year: string
-  event: string
-  era: string
-}
-
-export interface CultureCard {
-  title: string
-  description: string
-  image: string
-}
-
-export interface FoodItem {
-  name: string
-  description: string
-  category: string
-  price: string
-  image: string
-}
-
-export interface Attraction {
-  id: string
-  name: string
-  category: string
-  description: string
-  duration: string
-  distance: string
-  score: number
-  image: string
-}
-
-export interface HiddenGem {
-  name: string
-  why: string
-  distance: string
-  duration: string
-  image: string
-}
-
-export interface Activity {
-  activity: string
-  duration: string
-  cost: string
-  difficulty: string
-  bestTime: string
-  image: string
-}
-
-export interface NearbyPlace {
-  name: string
-  distance: string
-  type: string
-  travelTime: string
-  image: string
-}
-
-export interface TransportOption {
-  airport?: string
-  station?: string
-  highway?: string
-  distance: string
-  time: string
-}
-
-export interface StayCategory {
-  type: string
-  range: string
-  options: string[]
-}
-
-export interface MonthStatus {
-  month: string
-  status: 'ideal' | 'good' | 'avoid'
-}
-
-export interface BudgetBreakdown {
-  category: string
-  amount: string
-}
-
-export interface BudgetTier {
-  tier: string
-  perDay: string
-  breakdown: BudgetBreakdown[]
-}
-
-export interface ScheduleItem {
-  time: string
-  place: string
-  duration: string
-  distance?: string
-}
-
-export interface DayPlan {
-  day: number
-  schedule: ScheduleItem[]
-}
-
-export interface Experience {
-  title: string
-  duration: string
-  price: string
-  category: string
-  image: string
-}
-
-export interface Review {
-  name: string
-  location: string
-  text: string
-  rating: number
-  image: string
-  date: string
-}
-
-export interface Sources {
-  official: string[]
-  historical: string[]
-  lastVerified: string
-}
-
-export interface Destination {
-  id: string
-  slug: string
-  name: string
-  localName: string
-  destinationType: string
-  country: string
-  state: string
-  district: string
-  tehsil: string
-  shortDescription: string
-  tags: string[]
+interface Destination {
+  id: string; slug: string; name: string; localName: string; destinationType: string
+  country: string; state: string; district: string; shortDescription: string; tags: string[]
   hero: { image: string; poster?: string }
   quickFacts: QuickFact
   discoveryScore: DiscoveryScore
@@ -176,303 +48,162 @@ export interface Destination {
   sources: Sources
 }
 
-// ─── CHUKA BEACH DATA ─────────────────────────────────────────────────────────
+// ─── Chuka Beach Data ─────────────────────────────────────────────────────────
 
-export const chukaBeach: Destination = {
-  id: "chuka-beach",
-  slug: "chuka-beach-pilibhit",
-  name: "Chuka Beach",
-  localName: "चुका बीच (पीलीभीत फॉरेस्ट बीच)",
-  destinationType: "Inland Forest Beach & Tiger Reserve Ecotourism",
-  country: "India",
-  state: "Uttar Pradesh",
-  district: "Pilibhit",
-  tehsil: "Kalinagar / Puranpur (Mustafabad Range)",
-  shortDescription: "Uttar Pradesh’s best-kept secret, where dense Sal forests meet the shimmering, wave-lapped shores of a massive Himalayan reservoir.",
-  tags: ["ECOTOURISM BEACH", "PILIBHIT TIGER RESERVE", "SHARDA SAGAR RESERVOIR", "CANOPY TREE HOUSES", "TERAI BIG CATS"],
+const chukaBeach: Destination = {
+  id: 'chuka-beach',
+  slug: 'chuka-beach-pilibhit',
+  name: 'Chuka Beach',
+  localName: 'चुका बीच (पीलीभीत)',
+  destinationType: 'Forest Beach & Ecotourism Reserve',
+  country: 'India',
+  state: 'Uttar Pradesh',
+  district: 'Pilibhit',
+  shortDescription: "Uttar Pradesh's best-kept secret, where dense Sal forests meet the wave-lapped shores of Sharda Sagar reservoir.",
+  tags: ['ECOTOURISM', 'TIGER RESERVE', 'FOREST BEACH'],
   hero: {
-    image: "/images/chuka_beach_hero_fullhd.jpg",
-    poster: "/images/pilibhit_tiger.jpg"
+    image: '/images/chuka_beach_hero_fullhd.jpg',
+    poster: '/images/pilibhit_tiger.jpg'
   },
   quickFacts: {
-    bestTime: "Nov – Mar",
-    duration: "2 Days / 1 Night",
-    budget: "₹₹ (Moderate)",
-    destinationType: "Freshwater Beach & Wildlife Reserve",
-    difficulty: "Easy",
-    distance: "~63 km from Pilibhit / ~75 km from Bareilly"
+    bestTime: 'Nov – Mar',
+    duration: '2–3 Days',
+    budget: '₹₹',
+    destinationType: 'Forest Beach & Tiger Reserve',
+    difficulty: 'Easy',
+    distance: '~63 km from Pilibhit'
   },
   discoveryScore: {
     overall: 9.3,
     categories: [
-      { name: "Forest Shoreline Authenticity", score: 9.9 },
-      { name: "Tiger Reserve Biodiversity", score: 9.6 },
-      { name: "Vernacular Eco-Architecture", score: 9.2 },
-      { name: "Tharu Tribal Heritage", score: 7.0 },
-      { name: "Exclusivity & Serenity", score: 9.5 }
+      { name: 'Uniqueness', score: 9.9 },
+      { name: 'Ecological Significance', score: 9.6 },
+      { name: 'Vernacular Architecture', score: 9.2 },
+      { name: 'Crowd Level', score: 9.5 },
+      { name: 'Local Experience', score: 8.5 }
     ]
   },
   editorial: {
-    why: "Sitting hundreds of miles from India's ocean coasts, Chuka Beach is an extraordinary natural anomaly. Here, pristine white sands and gentle freshwater waves of the Sharda Sagar Dam lap against the dramatic backdrop of towering Sal and Teak canopies in the heart of the Pilibhit Tiger Reserve.",
-    story: "Originally conceptualized in 2002 as a pioneering community conservation initiative by visionary IFS officer Ramesh Pandey, Chuka Beach was designed to curb illegal encroachments, protect critical wildlife corridors, and generate sustainable livelihoods for indigenous communities. Surrounded by the sprawling 22-km expanse of the Sharda Sagar reservoir along the Indo-Nepal border, it has transformed into a tranquil sanctuary free of commercial hawkers, loud beach shacks, and mass tourism.",
-    storyFull: "Visitors stay in elevated wooden tree houses and traditional Tharu bamboo water huts constructed right over the water’s edge. Mornings begin with thick golden mist rolling off the reservoir, accompanied by the musical calls of hornbills, bar-headed geese, and the haunting alarm calls of spotted deer echoing through the Terai grasslands. With dedicated jeep safari tracks through the Mustafabad range, travelers can track Royal Bengal tigers, leopards, and swamp deer before returning to serene water-view sunsets."
+    why: "Sitting hundreds of miles away from India's ocean coasts, Chuka Beach is an extraordinary natural anomaly. Here along the vast Sharda Sagar Dam bordering Nepal, soft white sands and gentle freshwater waves meet the towering Sal and Teak canopies of the Pilibhit Tiger Reserve.",
+    story: "Conceived in 2002 by visionary IFS officer Ramesh Pandey as an innovative community ecotourism experiment, Chuka Beach was developed to curb illegal encroachments, protect critical wildlife corridors, and generate sustainable livelihoods for indigenous communities.",
+    storyFull: "The landscape is a complex tapestry of wetland ecosystems, irrigation canals, and deep Terai grasslands that shelter a breathtaking density of flora and fauna. Mornings begin with thick golden mist rolling off the reservoir, accompanied by the raucous calls of migratory waterfowl and the distant, haunting alarm calls of spotted deer. Visitors reside in elevated tree houses and traditional bamboo huts perched right at the water’s edge, experiencing an unvarnished wilderness where the pulse of the wild is felt rather than just observed."
   },
   history: {
-    shortIntro: "From historic Nawabi hunting grounds and an irrigation dam to an award-winning eco-tourism haven.",
+    shortIntro: 'From royal Terai hunting grounds to an internationally awarded tiger reserve.',
     timeline: [
-      { year: "Pre-Independence", event: "Dense, untamed Terai forest tract under Nawabi and British feudal control, primarily used for timber extraction and royal shikar.", era: "Colonial Era" },
-      { year: "1970s–1980s", event: "Construction of the massive Sharda Sagar Dam on the Sharda River creates a 22-km Himalayan-fed reservoir flanking rich alluvial forests.", era: "Hydrology Milestone" },
-      { year: "2002", event: "Visionary IFS officer Ramesh Pandey conceptualizes Chuka Beach, building low-impact Tharu eco-huts and tree houses with local community participation.", era: "Conservation Pioneer" },
-      { year: "2008", event: "Formally notified as Pilibhit Tiger Reserve (45th in India); later awarded the prestigious global TX2 Award for doubling tiger population ahead of target.", era: "Tiger Reserve Notification" },
-      { year: "Present", event: "Regulated strictly by the UP Forest Department with controlled daily permits, online ecotourism booking, and trained local guides.", era: "Sustainable Future" }
+      { year: 'Pre-1947', event: 'Dense Terai forest tract under Nawabi and British feudal control, used for timber extraction and royal shikar.', era: 'Colonial Era' },
+      { year: '1970s', event: 'Construction of the Sharda Sagar Dam creates a vast 22-km freshwater reservoir flanked by rich alluvial forests.', era: 'Hydrology Milestone' },
+      { year: '2002', event: 'IFS officer Ramesh Pandey pioneers Chuka Beach with community-built Tharu eco-huts to foster conservation.', era: 'Conservation Pioneer' },
+      { year: '2008', event: 'Formally notified as Pilibhit Tiger Reserve (45th in India); later won the global TX2 award for doubling tiger numbers.', era: 'Tiger Reserve Era' },
+      { year: 'Present', event: 'Strictly managed by UP Forest Department with online permits, elevated treehouses, and guided safari tracks.', era: 'Modern Ecotourism' }
     ]
   },
   culture: [
-    {
-      title: "Indigenous Tharu Tribal Heritage",
-      description: "Local fringe villages are home to the Tharu people, who maintain an intimate bond with the Terai forests, practicing sustainable foraging, bamboo craftsmanship, and vibrant folk traditions.",
-      image: '/images/treehouse_hut.jpg'
-    },
-    {
-      title: "Bansuri Nagari (Flute Capital of India)",
-      description: "Pilibhit crafts over 90% of India's classical bamboo flutes under the ODOP scheme, immortalized by the 61-foot world-record flute at Bansuri Chowk.",
-      image: '/images/bansuri_chowk.jpg'
-    },
-    {
-      title: "Sacred Groves & Bhairo Baba Shrines",
-      description: "Ancient Pavitra Van (sacred forest groves) border the reserve where villagers offer prayers to local deities like Bhairo Baba for protection and peaceful coexistence with tigers.",
-      image: '/images/forest_watch_tower.jpg'
-    },
-    {
-      title: "Legends of the Terai Spirits",
-      description: "Centuries-old oral folklore tells of benevolent Terai forest spirits that guard the big cats and punish those who disrespect the sacred waters of Sharda Sagar.",
-      image: '/images/pilibhit_tiger_grass.jpg'
-    }
+    { title: 'Indigenous Tharu Heritage', description: 'Fringe villages are home to the Tharu tribe, who maintain a symbiotic bond with the forest, practicing sustainable foraging, bamboo craftsmanship, and Jhumra folk dances.', image: '/images/treehouse_hut.jpg' },
+    { title: 'Bansuri Nagari of India', description: "Pilibhit crafts over 90% of India's classical bamboo flutes under ODOP, celebrated by the 61-foot Guinness World Record flute at Bansuri Chowk.", image: '/images/bansuri_chowk.jpg' },
+    { title: 'Sacred Groves & Bhairo Baba', description: 'Ancient Pavitra Van (sacred groves) surround the reserve where Terai villagers offer prayers to Bhairo Baba for protection and harmony with tigers.', image: '/images/forest_watch_tower.jpg' },
+    { title: 'Terai Spirits & Folklore', description: 'Oral legends tell of benevolent Terai forest spirits that guard the big cats and protect the pristine waters of Sharda Sagar from disturbance.', image: '/images/pilibhit_tiger_grass.jpg' }
   ],
   food: [
-    {
-      name: "Pilibhit Bajra Roti with Saag",
-      description: "Wholesome pearl millet flatbread baked on wood-fire ovens, served with fresh mustard or bathua greens and generous dollops of country white butter.",
-      category: "Specialty",
-      price: "₹80–₹140/thali",
-      image: '/images/litti_chokha.jpg'
-    },
-    {
-      name: "Desi Ghee Terai Dal-Bati & Chokha",
-      description: "Crisp whole wheat baked batis steeped in pure local desi ghee, paired with smoky fire-roasted brinjal-tomato chokha and spiced lentil curry.",
-      category: "Main Course",
-      price: "₹100–₹160",
-      image: '/images/litti_chokha.jpg'
-    },
-    {
-      name: "Pilibhit Special Urad Dal Kachori",
-      description: "Golden flaky pastries stuffed with spiced lentils, accompanied by tangy aloo rasedar gravy and crushed green chili-coriander chutney.",
-      category: "Breakfast / Snack",
-      price: "₹30–₹60/plate",
-      image: '/images/kachori.jpg'
-    },
-    {
-      name: "Fresh Churned Mattha & Sugarcane Gur",
-      description: "Refreshing spiced buttermilk tempered with roasted cumin, followed by pure unrefined country jaggery freshly pressed from neighboring sugarcane fields.",
-      category: "Beverage",
-      price: "₹20–₹40/glass",
-      image: '/images/sattu_drink.jpg'
-    },
-    {
-      name: "Madhotanda Kulhad Chai & Samosa Chaat",
-      description: "Cardamom-ginger steeped hot clay-pot tea enjoyed with crispy potato samosas topped with fresh curd, tamarind chutney, and roasted spices.",
-      category: "Highway Snack",
-      price: "₹30–₹60",
-      image: '/images/samosa_chaat.jpg'
-    },
-    {
-      name: "Slow-Cooked Kheer & Rabri",
-      description: "Thick creamy rice dessert slow-simmered with country buffalo milk, cardamom, and toasted dry fruits, popular across Pilibhit and Madhotanda dhabas.",
-      category: "Dessert",
-      price: "₹40–₹80",
-      image: '/images/kheer.jpg'
-    }
+    { name: 'Pilibhit Bajra Roti & Saag', description: 'Rustic wood-fired pearl millet flatbreads served with fresh winter mustard or bathua greens and generous white butter.', category: 'Specialty', price: '₹80–₹120/thali', image: '/images/litti_chokha.jpg' },
+    { name: 'Desi Ghee Dal-Bati & Chokha', description: 'Crisp whole wheat baked batis dipped in pure local desi ghee, paired with smoky fire-roasted brinjal-tomato chokha.', category: 'Main Course', price: '₹100–₹150', image: '/images/litti_chokha.jpg' },
+    { name: 'Pilibhit Urad Dal Kachori', description: 'Golden flaky pastries stuffed with spiced black gram lentils, accompanied by tangy aloo rasedar gravy and mint chutney.', category: 'Breakfast', price: '₹30–₹50/plate', image: '/images/kachori.jpg' },
+    { name: 'Fresh Churned Mattha & Gur', description: 'Refreshing spiced country buttermilk tempered with roasted cumin, followed by organic jaggery from local sugarcane fields.', category: 'Beverage', price: '₹20–₹40', image: '/images/sattu_drink.jpg' },
+    { name: 'Madhotanda Samosa Chaat', description: 'Highway dhaba special crushed potato samosas topped with fresh sweet curd, tamarind chutney, and roasted spices.', category: 'Street Food', price: '₹30–₹60', image: '/images/samosa_chaat.jpg' }
   ],
   attractions: [
-    {
-      id: "chuka-beach-shoreline",
-      name: "Chuka Main Beach & Shoreline",
-      category: "Forest Beach & Scenic Waterfront",
-      description: "A serene white sand shoreline meeting the vast freshwater Sharda Sagar reservoir with gentle waves, perfect for peaceful walks, birdwatching, and morning photography.",
-      duration: "2–3 Hours",
-      distance: "Core Eco-Tourism Zone",
-      score: 9.8,
-      image: '/images/chuka_beach_hero_fullhd.jpg'
-    },
-    {
-      id: "water-huts-treehouses",
-      name: "Water Huts & Elevated Tree Houses",
-      category: "Vernacular Eco-Architecture",
-      description: "Picturesque elevated wooden machans and traditional Tharu bamboo huts perched directly over the water's edge, offering an immersive jungle-living stay.",
-      duration: "Overnight / 1 Hour Visit",
-      distance: "Waterfront Enclave",
-      score: 9.6,
-      image: '/images/treehouse_hut.jpg'
-    },
-    {
-      id: "mustafabad-safari",
-      name: "Mustafabad Forest Safari Track",
-      category: "Wildlife & Tiger Country",
-      description: "Designated 4x4 open jeep safari routes winding through towering Sal forests and Terai grasslands with high probabilities of spotting Royal Bengal tigers, leopards, and swamp deer.",
-      duration: "3–4 Hours",
-      distance: "Mustafabad Range",
-      score: 9.7,
-      image: '/images/pilibhit_tiger.jpg'
-    },
-    {
-      id: "sharda-sagar-dam",
-      name: "Sharda Sagar Dam Reservoir Viewpoint",
-      category: "Wetland & Panoramic Vista",
-      description: "A massive 22-km long reservoir bordering Nepal that acts as a vital wintering ground for thousands of migratory birds including bar-headed geese, mallards, and osprey.",
-      duration: "1–2 Hours",
-      distance: "Dam Embankment",
-      score: 9.4,
-      image: '/images/sharda_sagar_dam.jpg'
-    },
-    {
-      id: "canopy-watchtower",
-      name: "Forest Canopy Watchtower (Machan)",
-      category: "Observation Deck & Birding",
-      description: "High-altitude forest department watchtower providing sweeping 360-degree vistas across the canopy, grassland-to-water transition zone, and grazing wild herbivores.",
-      duration: "1 Hour",
-      distance: "1 km from beach",
-      score: 9.2,
-      image: '/images/forest_watch_tower.jpg'
-    },
-    {
-      id: "bansuri-chowk",
-      name: "Bansuri Chowk (Pilibhit City)",
-      category: "Cultural Landmark & Craft Hub",
-      description: "The city's vibrant artisan crossroads featuring the world's largest 61-foot bamboo flute, celebrating Pilibhit's GI-tagged flute making heritage.",
-      duration: "1 Hour",
-      distance: "63 km in Pilibhit City",
-      score: 9.0,
-      image: '/images/bansuri_chowk.jpg'
-    }
+    { id: 'chuka-beach-shoreline', name: 'Chuka Main Beach & Shoreline', category: 'Nature', description: 'A peaceful stretch of white sand meeting the Sharda Sagar reservoir, ideal for contemplative walks, sunset views, and birdwatching.', duration: '2–3 hrs', distance: 'Waterfront', score: 9.8, image: '/images/chuka_beach_hero_fullhd.jpg' },
+    { id: 'water-huts-treehouses', name: 'Water Huts & Tree House Enclave', category: 'Hidden Gems', description: "Elevated wooden machans and traditional Tharu bamboo huts perched directly over the water's edge for an immersive jungle stay.", duration: 'Overnight', distance: 'Waterfront', score: 9.6, image: '/images/treehouse_hut.jpg' },
+    { id: 'mustafabad-safari', name: 'Mustafabad Forest Safari Track', category: 'Nature', description: 'Designated 4x4 open jeep safari tracks through dense Sal forest and grasslands with high chances of tiger and leopard sightings.', duration: '3–4 hrs', distance: 'Mustafabad Range', score: 9.7, image: '/images/pilibhit_tiger.jpg' },
+    { id: 'sharda-sagar-dam', name: 'Sharda Sagar Dam Reservoir Viewpoint', category: 'Nature', description: 'A massive 22-km long reservoir acting as a winter haven for migratory birds including bar-headed geese, mallards, and osprey.', duration: '1–2 hrs', distance: 'Dam Embankment', score: 9.3, image: '/images/sharda_sagar_dam.jpg' },
+    { id: 'canopy-watchtower', name: 'Canopy Watchtower (Machan)', category: 'Nature', description: 'High-altitude forest department watchtower providing sweeping 360-degree vistas across the canopy and grassland watering holes.', duration: '1 hr', distance: '1 km from beach', score: 9.2, image: '/images/forest_watch_tower.jpg' },
+    { id: 'bansuri-chowk', name: 'Bansuri Chowk (Pilibhit City)', category: 'Culture', description: "Cultural landmark in Pilibhit featuring the Guinness World Record 61-foot flute, showcasing the city's ODOP craft heritage.", duration: '1 hr', distance: '63 km in Pilibhit', score: 9.0, image: '/images/bansuri_chowk.jpg' }
   ],
   hiddenGems: [
-    {
-      name: "Banbasa Feeder Canal Confluence",
-      why: "A secluded emerald waterway connecting the Banbasa barrage to Sharda Sagar, where smooth-coated otters and marsh mugger crocodiles bask in quiet solitude.",
-      distance: "Near Dam inlet",
-      duration: "1.5 hrs",
-      image: '/images/sharda_feeder_canal.jpg'
-    },
-    {
-      name: "Bhimtaal Savannah Grasslands",
-      why: "Expansive natural Terai grassland glade famous among forest guides for early morning sightings of majestic tigers emerging from tall grass and herds of swamp deer.",
-      distance: "Deep Mustafabad Zone",
-      duration: "2 hrs",
-      image: '/images/pilibhit_tiger_grass.jpg'
-    },
-    {
-      name: "Mahof Colonial Forest Bungalow",
-      why: "A historic British-era forest outpost shaded by century-old heritage trees, offering tranquil walking trails, vintage architecture, and rare butterfly sightings.",
-      distance: "Mahof Forest Range",
-      duration: "1.5 hrs",
-      image: '/images/forest_watch_tower.jpg'
-    }
+    { name: 'Banbasa Feeder Canal Confluence', why: 'A secluded turquoise water canal connecting the Banbasa barrage to Sharda Sagar, where smooth-coated otters and marsh crocodiles bask.', distance: 'Near dam inlet', duration: '1.5 hrs', image: '/images/sharda_feeder_canal.jpg' },
+    { name: 'Bhimtaal Savannah Grasslands', why: 'Vast natural savanna clearing deep in the buffer zone famed for sunrise sightings of tigers emerging from tall grass and herds of swamp deer.', distance: 'Mustafabad Track', duration: '2 hrs', image: '/images/pilibhit_tiger_grass.jpg' },
+    { name: 'Mahof Colonial Inspection Bungalow', why: 'Historic British-era forest outpost shaded by century-old heritage trees, offering vintage architecture and tranquil birding trails.', distance: 'Mahof Range', duration: '1.5 hrs', image: '/images/forest_watch_tower.jpg' }
   ],
   thingsToDo: [
-    { activity: "Sunrise White Sand Beach Walk & Birding", duration: "2.5 hrs", cost: "₹100 (Entry)", difficulty: "Easy", bestTime: "06:30 AM – 09:30 AM, Nov–Mar", image: "/images/chuka_beach_hero_fullhd.jpg" },
-    { activity: "Mustafabad 4x4 Jeep Tiger Safari", duration: "3.5 hrs", cost: "₹3,600–₹4,500/vehicle", difficulty: "Moderate", bestTime: "06:30 AM or 02:30 PM shift", image: "/images/pilibhit_tiger.jpg" },
-    { activity: "Calm Water Boating & Reservoir Cruise", duration: "1 hr", cost: "₹150–₹300/person", difficulty: "Easy", bestTime: "03:30 PM – 05:30 PM", image: "/images/sharda_sagar_dam.jpg" },
-    { activity: "Canopy Watchtower Raptor & Deer Staking", duration: "1.5 hrs", cost: "Included with permit", difficulty: "Easy", bestTime: "Golden Hour 04:00 PM – 05:30 PM", image: "/images/forest_watch_tower.jpg" },
-    { activity: "Pilibhit Bamboo Flute Artisan Trail", duration: "2 hrs", cost: "Free / Craft Purchase", difficulty: "Easy", bestTime: "11:00 AM – 04:00 PM", image: "/images/bansuri_chowk.jpg" }
+    { activity: 'Sunrise White Sand Beach Walk', duration: '2.5 hrs', cost: '₹100 (Entry)', difficulty: 'Easy', bestTime: '06:30 AM, Nov–Mar', image: '/images/chuka_beach_hero_fullhd.jpg' },
+    { activity: 'Mustafabad 4x4 Tiger Safari', duration: '3.5 hrs', cost: '₹3,600–₹4,500', difficulty: 'Easy', bestTime: 'Morning / Afternoon', image: '/images/pilibhit_tiger.jpg' },
+    { activity: 'Reservoir Boat Cruise & Paddle Safari', duration: '1 hr', cost: '₹150–₹300', difficulty: 'Easy', bestTime: '03:30 PM, Nov–Mar', image: '/images/sharda_sagar_dam.jpg' },
+    { activity: 'Canopy Watchtower Bird Watching', duration: '1.5 hrs', cost: 'Included', difficulty: 'Easy', bestTime: 'Golden Hour 04:00 PM', image: '/images/forest_watch_tower.jpg' },
+    { activity: 'Pilibhit Bamboo Flute Artisan Trail', duration: '2 hrs', cost: 'Free', difficulty: 'Easy', bestTime: '11:00 AM – 04:00 PM', image: '/images/bansuri_chowk.jpg' }
   ],
   nearbyPlaces: [
-    { name: "Madhotanda Rural Market", distance: "10 km", type: "Terai Bazaar & Local Dhabas", travelTime: "15 min", image: "/images/samosa_chaat.jpg" },
-    { name: "Pilibhit City Center", distance: "63 km", type: "District HQ & Historic Flute Hub", travelTime: "1.5 hrs", image: "/images/bansuri_chowk.jpg" },
-    { name: "Bareilly Junction & City", distance: "75 km", type: "Major Railway Trunk & Airport", travelTime: "2 hrs", image: "https://images.unsplash.com/photo-1591018653367-9c01498b3320?w=500&h=340&fit=crop&auto=format" },
-    { name: "Dudhwa National Park Buffer", distance: "50 km", type: "Tiger & One-Horned Rhino Sanctuary", travelTime: "1.5 hrs", image: "/images/pilibhit_tiger_grass.jpg" }
+    { name: 'Madhotanda Rural Market', distance: '10 km', type: 'Terai Bazaar', travelTime: '15 min', image: '/images/samosa_chaat.jpg' },
+    { name: 'Pilibhit City Center', distance: '63 km', type: 'District HQ & Flute Hub', travelTime: '1.5 hrs', image: '/images/bansuri_chowk.jpg' },
+    { name: 'Bareilly City & Airport', distance: '75 km', type: 'Major Transit Hub', travelTime: '2 hrs', image: 'https://images.unsplash.com/photo-1591018653367-9c01498b3320?w=500&h=340&fit=crop&auto=format' },
+    { name: 'Dudhwa National Park Buffer', distance: '50 km', type: 'Wildlife Reserve', travelTime: '1.5 hrs', image: '/images/pilibhit_tiger_grass.jpg' }
   ],
   travel: {
-    air: { airport: "Bareilly Airport (BEK) / Lucknow Airport (LKO)", distance: "80 km / 260 km", time: "Bareilly ~2 hrs drive; Lucknow ~5 hrs drive via smooth State Highways" },
-    rail: { station: "Pilibhit Junction (PBE) / Bareilly Junction (BRY)", distance: "63 km / 75 km", time: "Pilibhit connects regional expresses; Bareilly is a major national trunk junction with daily Shatabdi & Rajdhani connections" },
-    road: { highway: "State Highway 30 via Madhotanda & Mustafabad Check Post", distance: "Scenic forest approach road", time: "Smooth paved road shaded by Sal canopy leading directly to the forest entry barrier" }
+    air: { airport: 'Bareilly Airport (BEK) / Lucknow (LKO)', distance: '80 km / 260 km', time: 'Bareilly ~2 hrs drive; Lucknow ~5 hrs drive' },
+    rail: { station: 'Pilibhit Junction (PBE) / Bareilly (BRY)', distance: '63 km / 75 km', time: 'Direct expresses to Pilibhit; Bareilly has daily Rajdhani & Shatabdi trains' },
+    road: { highway: 'State Highway 30 via Madhotanda', distance: 'Forest canopy approach road', time: 'Smooth paved road through Sal trees leading to Mustafabad Gate' }
   },
   stay: {
     categories: [
-      { type: "Chuka Forest Eco-Huts & Tree Houses", range: "₹2,400–₹7,600/night", options: ["Elevated Tree Machan (Waterfront)", "Traditional Tharu Bamboo Cottages (Official UP Ecotourism portal booking)"] },
-      { type: "Peripheral Agro-Homestays & Resorts", range: "₹1,800–₹3,500/night", options: ["Royal Kingdom Resort (Pilibhit Road)", "Madhotanda Farmstays"] },
-      { type: "City Hotels in Pilibhit", range: "₹1,200–₹2,500/night", options: ["City hotels near Pilibhit Junction & Station Road"] }
+      { type: 'Tree Houses', range: '₹3,500–₹7,600/night', options: ['Waterfront Tree Machan', 'Canopy Luxury Suite (UP Ecotourism booking)'] },
+      { type: 'Bamboo Huts', range: '₹2,400–₹4,500/night', options: ['Traditional Tharu Bamboo Cottages', 'Forest Department Rest Huts'] },
+      { type: 'Resorts', range: '₹2,000–₹4,500/night', options: ['Royal Kingdom Resort Pilibhit', 'Madhotanda Agro-Farmstays'] },
+      { type: 'City Hotels', range: '₹1,200–₹2,500/night', options: ['Pilibhit Station Road Hotels', 'Civil Lines Guesthouses'] },
+      { type: 'Homestay', range: '₹1,000–₹2,000/night', options: ['Village homestays near Mustafabad Gate'] }
     ]
   },
   bestTime: {
     months: [
-      { month: "Jan", status: "ideal" }, { month: "Feb", status: "ideal" }, { month: "Mar", status: "good" },
-      { month: "Apr", status: "good" }, { month: "May", status: "good" }, { month: "Jun", status: "avoid" },
-      { month: "Jul", status: "avoid" }, { month: "Aug", status: "avoid" }, { month: "Sep", status: "avoid" },
-      { month: "Oct", status: "good" }, { month: "Nov", status: "ideal" }, { month: "Dec", status: "ideal" }
+      { month: 'Jan', status: 'ideal' }, { month: 'Feb', status: 'ideal' }, { month: 'Mar', status: 'good' },
+      { month: 'Apr', status: 'good' }, { month: 'May', status: 'good' }, { month: 'Jun', status: 'avoid' },
+      { month: 'Jul', status: 'avoid' }, { month: 'Aug', status: 'avoid' }, { month: 'Sep', status: 'avoid' },
+      { month: 'Oct', status: 'good' }, { month: 'Nov', status: 'ideal' }, { month: 'Dec', status: 'ideal' }
     ]
   },
   budget: {
     tiers: [
-      { tier: "Day Trip / Backpacker", perDay: "₹1,500–₹2,500", breakdown: [{ category: "Beach Entry & Shared Cab", amount: "₹800–₹1,200" }, { category: "Local Food & Tea", amount: "₹400–₹600" }, { category: "Boating / Activity", amount: "₹300–₹700" }] },
-      { tier: "Eco-Hut Safari Experience", perDay: "₹4,500–₹7,500", breakdown: [{ category: "Tree House / Tharu Hut (shared)", amount: "₹2,500–₹4,000" }, { category: "4x4 Jungle Jeep Safari", amount: "₹1,500–₹2,500" }, { category: "Forest Canteen Dining", amount: "₹500–₹1,000" }] }
+      { tier: 'Budget Explorer', perDay: '₹1,500–₹2,500', breakdown: [{ category: 'Stay', amount: '₹800–₹1,200' }, { category: 'Food', amount: '₹300–₹500' }, { category: 'Transport', amount: '₹300–₹500' }, { category: 'Entry Fees', amount: '₹100' }, { category: 'Activities', amount: '₹150–₹300' }] },
+      { tier: 'Safari & Eco-Hut', perDay: '₹4,500–₹7,500', breakdown: [{ category: 'Stay', amount: '₹2,500–₹4,000' }, { category: 'Food', amount: '₹600–₹1,000' }, { category: 'Transport', amount: '₹500–₹800' }, { category: 'Safari & Guide', amount: '₹1,500–₹2,200' }, { category: 'Activities', amount: '₹300–₹600' }] },
+      { tier: 'Premium Wildlife', perDay: '₹8,000+', breakdown: [{ category: 'Stay', amount: '₹5,000–₹7,600' }, { category: 'Food', amount: '₹1,200–₹2,000' }, { category: 'Private Cab', amount: '₹2,000–₹3,000' }, { category: 'Full Safari Gypsy', amount: '₹3,600–₹4,500' }, { category: 'Activities', amount: '₹1,000+' }] }
     ]
   },
   itineraries: {
-    '1-Day Express': [
-      {
-        day: 1,
-        schedule: [
-          { time: "07:00 AM", place: "Early arrival at Mustafabad Forest Gate, entry formalities, and morning open-gypsy tiger safari", duration: "3.5 hrs", distance: "Mustafabad Range" },
-          { time: "11:00 AM", place: "Wholesome lunch at Forest Canteen followed by relaxed stroll along Chuka Beach shoreline", duration: "2.5 hrs", distance: "Chuka Beach" },
-          { time: "02:30 PM", place: "Scenic boat cruise on Sharda Sagar Dam with bird photography of Bar-headed Geese", duration: "1.5 hrs", distance: "Dam Shoreline" },
-          { time: "04:30 PM", place: "Sunset panoramic view from Canopy Watchtower and departure through Sal forest tunnel road", duration: "1.5 hrs", distance: "Gate Exit" }
-        ]
-      }
+    '1 Day': [{ day: 1, schedule: [{ time: '06:30 AM', place: 'Arrival at Mustafabad Forest Gate & Morning 4x4 Tiger Safari', duration: '3.5 hrs', distance: 'Mustafabad Range' }, { time: '10:30 AM', place: 'Breakfast of Bajra Roti & Mattha at Forest Canteen', duration: '45 min', distance: 'Core Complex' }, { time: '11:30 AM', place: 'Relaxed walk along Chuka White Sand Beach & Shoreline', duration: '2 hrs', distance: 'Waterfront' }, { time: '02:00 PM', place: 'Lunch followed by Sharda Sagar Dam reservoir boat cruise', duration: '2 hrs', distance: 'Dam Shoreline' }, { time: '04:30 PM', place: 'Sunset view from Canopy Watchtower before gate exit', duration: '1 hr', distance: 'Watchtower' }] }],
+    '2 Days': [
+      { day: 1, schedule: [{ time: '12:00 PM', place: 'Check-in to Waterfront Tree Machan or Tharu bamboo hut', duration: '1.5 hrs', distance: 'Waterfront' }, { time: '02:30 PM', place: 'Nature walk along Sharda Feeder Canal & Shoreline photography', duration: '2.5 hrs', distance: 'Beach Enclave' }, { time: '05:30 PM', place: 'Sunset over Sharda Sagar Dam followed by night stargazing by the water', duration: '2.5 hrs', distance: 'Shoreline' }] },
+      { day: 2, schedule: [{ time: '06:30 AM', place: 'Sunrise deep-jungle jeep safari in core tiger territory', duration: '3.5 hrs', distance: 'Core Range' }, { time: '10:30 AM', place: 'Local breakfast & interaction with Tharu naturalist guides', duration: '1 hr', distance: 'Complex' }, { time: '12:00 PM', place: 'Check-out & visit to Madhotanda Market and Pilibhit Bansuri Chowk', duration: '2.5 hrs', distance: '63 km' }] }
     ],
-    '2-Day Forest Stay': [
-      {
-        day: 1,
-        schedule: [
-          { time: "12:00 PM", place: "Arrival at Mustafabad Check Post and check-in to elevated tree house or Tharu bamboo hut", duration: "1.5 hrs", distance: "Waterfront Huts" },
-          { time: "02:30 PM", place: "Afternoon nature trail along the Sharda canal feeder and tranquil beach relaxation", duration: "3 hrs", distance: "Chuka Beach" },
-          { time: "06:00 PM", place: "Spectacular crimson sunset over Sharda Sagar reservoir followed by night stargazing by the water", duration: "2.5 hrs", distance: "Shoreline Deck" }
-        ]
-      },
-      {
-        day: 2,
-        schedule: [
-          { time: "06:30 AM", place: "Sunrise deep-forest jeep safari in core tiger territory of Pilibhit Tiger Reserve", duration: "3.5 hrs", distance: "Core Jungle" },
-          { time: "10:30 AM", place: "Hearty breakfast of Bajra Roti, Saag, and churned Mattha at the forest canteen", duration: "1 hr", distance: "Complex" },
-          { time: "12:00 PM", place: "Check-out, visit to Madhotanda local market and stop at Pilibhit Bansuri Chowk", duration: "2 hrs", distance: "Madhotanda & Pilibhit" }
-        ]
-      }
+    '3 Days': [
+      { day: 1, schedule: [{ time: '01:00 PM', place: 'Arrival & check-in to elevated wooden tree house', duration: '1.5 hrs', distance: 'Waterfront' }, { time: '03:00 PM', place: 'Paddle boat safari on calm waters of Sharda Sagar Dam', duration: '2 hrs', distance: 'Reservoir' }, { time: '06:00 PM', place: 'Crimson sunset over the Himalayan reservoir & dinner at canteen', duration: '2 hrs', distance: 'Canteen' }] },
+      { day: 2, schedule: [{ time: '06:00 AM', place: 'Morning jeep safari in Mustafabad range for tiger & leopard tracking', duration: '4 hrs', distance: 'Core Forest' }, { time: '11:00 AM', place: 'Visit to Mahof Colonial Inspection Bungalow & birding trails', duration: '2.5 hrs', distance: 'Mahof' }, { time: '03:30 PM', place: 'Canopy Watchtower bird watching for raptors and bar-headed geese', duration: '2.5 hrs', distance: 'Watchtower' }] },
+      { day: 3, schedule: [{ time: '07:00 AM', place: 'Sunrise beach walk along white sands & Tharu village craft tour', duration: '2.5 hrs', distance: 'Mustafabad' }, { time: '11:00 AM', place: 'Excursion to Pilibhit City: Bansuri Chowk & handmade flute workshops', duration: '3 hrs', distance: 'Pilibhit City' }, { time: '03:00 PM', place: 'Departure to Bareilly / Lucknow', duration: '2 hrs', distance: 'Highway' }] }
     ]
   },
   experiences: [
-    { title: "Sharda Sagar Shoreline Walk & Boating", duration: "2 hrs", price: "₹250", category: "Waterfront", image: "/images/chuka_beach_hero_fullhd.jpg" },
-    { title: "Mustafabad 4x4 Tiger Safari", duration: "3.5 hrs", price: "₹3,800/gypsy", category: "Wildlife", image: "/images/pilibhit_tiger.jpg" },
-    { title: "Tharu Bamboo Treehouse Overnight Experience", duration: "Overnight", price: "₹3,500+", category: "Eco-Living", image: "/images/treehouse_hut.jpg" },
-    { title: "Pilibhit Bamboo Flute (Bansuri) Heritage Walk", duration: "2 hrs", price: "Free", category: "ODOP Craft", image: "/images/bansuri_chowk.jpg" }
+    { title: 'Mustafabad 4x4 Tiger Safari', duration: '3.5 hrs', price: '₹3,600–₹4,500', category: 'Wildlife', image: '/images/pilibhit_tiger.jpg' },
+    { title: 'Waterfront Treehouse Overnight', duration: 'Overnight', price: '₹3,500–₹7,600', category: 'Eco-Living', image: '/images/treehouse_hut.jpg' },
+    { title: 'Sharda Sagar Shoreline & Boat Cruise', duration: '2 hrs', price: '₹200–₹400', category: 'Waterfront', image: '/images/sharda_sagar_dam.jpg' },
+    { title: 'Pilibhit Flute Heritage Trail', duration: '2 hrs', price: 'Free', category: 'Craft', image: '/images/bansuri_chowk.jpg' }
   ],
   aiPrompts: [
-    "How do I book an official forest department tree house at Chuka Beach, and what is included in the tariff?",
-    "What are the best months and photography tips for capturing migratory birds and wildlife at Sharda Sagar Dam?",
-    "Can you outline a safe 2-day family itinerary combining Chuka Beach with Pilibhit's Bansuri Chowk?",
-    "What wildlife species can I spot during a morning jeep safari in the Mustafabad range of Pilibhit Tiger Reserve?",
-    "What should I pack for a winter stay in the eco-huts of Chuka Beach considering Terai cold and mist?"
+    "How do I book an official forest tree house at Chuka Beach?",
+    "What wildlife can I spot during a morning safari in Pilibhit?",
+    "What are the road directions from Bareilly or Lucknow to Chuka Beach?",
+    "Can you suggest a 2-day family itinerary for Chuka Beach?",
+    "What is the story behind Pilibhit's 61-foot Guinness World Record flute?",
+    "Chuka Beach par rukne ke liye forest huts kaise book karein?"
   ],
   reviews: [
-    { name: "Vikramaditya Rathore", location: "Bareilly", text: "Finding white sand beaches and gentle waves in the middle of a tiger reserve in UP feels surreal! Staying in the wooden treehouse with mist rolling over Sharda Sagar was an unforgettable experience.", rating: 5, image: "/images/chuka_beach_hero_fullhd.jpg", date: "February 2026" },
-    { name: "Sunita Deshmukh", location: "New Delhi", text: "We spotted a magnificent tigress right on the Mustafabad safari track! The forest department's eco-huts are clean, well-managed, and the peace along the water is divine.", rating: 5, image: "/images/pilibhit_tiger.jpg", date: "January 2026" }
+    { name: 'Vikramaditya Rathore', location: 'Bareilly', text: 'Finding white sand beaches and gentle waves in the middle of a tiger reserve in UP feels surreal! Staying in the wooden treehouse with mist rolling over Sharda Sagar was unforgettable.', rating: 5, image: '/images/chuka_beach_hero_fullhd.jpg', date: 'February 2026' },
+    { name: 'Sunita Deshmukh', location: 'New Delhi', text: 'We spotted a magnificent tigress right on the Mustafabad safari track! The forest department eco-huts are clean, well-managed, and the peace along the water is divine.', rating: 5, image: '/images/pilibhit_tiger.jpg', date: 'January 2026' },
+    { name: 'Col. Rajesh Verma', location: 'Lucknow', text: 'An incredible eco-tourism destination. Zero commercial noise, pure Sal forest canopy, and authentic rural Terai food like Bajra Roti and Mattha. Highly recommended.', rating: 5, image: '/images/forest_watch_tower.jpg', date: 'December 2025' }
   ],
   sources: {
-    official: ["Uttar Pradesh Ecotourism Development Board (upecotourism.in)", "Pilibhit Tiger Reserve Administration (pilibhittigerreserve.in)", "District Administration Pilibhit (pilibhit.nic.in)"],
-    historical: ["Pilibhit Forest Division Working Plan & Field Survey (UP Forest Dept)", "National Tiger Conservation Authority (NTCA) — Pilibhit Evaluation Report"],
-    lastVerified: "September 2026"
+    official: ['Uttar Pradesh Ecotourism Development Board (upecotourism.in)', 'Pilibhit Tiger Reserve Administration (pilibhittigerreserve.in)', 'National Tiger Conservation Authority (ntca.gov.in)'],
+    historical: ['Pilibhit Forest Division Working Plan (UP Forest Dept)', 'Gazetteer of Pilibhit District — Historical & Environmental Survey'],
+    lastVerified: 'September 2026'
   }
 }
-
-// ─── Components ───────────────────────────────────────────────────────────────
+// ─── Icons ───────────────────────────────────────────────────────────────────
 
 const IconSun = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
 const IconClock = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
@@ -488,32 +219,32 @@ const IconX = () => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" 
 const IconPlane = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M17.8 19.2L16 11l3.5-3.5C21 6 21 4 19.5 2.5 18 1 16 1 14.5 2.5L11 6 2.8 4.2 1.4 5.6l6.4 4.5L6 11.5l-1.5.5L3 11l-1.5 1.5 3 3 3 3L9 17l.5-1.5 1-1.5 4.5 6.4 1.4-1.4z"/></svg>
 const IconTrain = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="4" y="3" width="16" height="13" rx="2"/><path d="M4 11h16"/><path d="M12 3v8"/><path d="M8 19l-2 3"/><path d="M18 22l-2-3"/><path d="M8 19h8"/></svg>
 const IconCar = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v9a2 2 0 0 1-2 2h-2"/><circle cx="7.5" cy="17" r="2.5"/><path d="M15 17H10"/><circle cx="17.5" cy="17" r="2.5"/></svg>
-const IconShield = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-const IconPhone = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+const IconVolume = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+const IconPlay = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+const IconPause = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
 
 // ─── Reusable Place Card ──────────────────────────────────────────────────────
 
 function PlaceCard({ place, saved, onSave }: { place: Attraction; saved: boolean; onSave: () => void }) {
   return (
     <div className="group flex flex-col border border-d360-border bg-white hover:border-d360-muted transition-colors duration-200" style={{ borderRadius: '2px' }}>
-      <div className="relative overflow-hidden" style={{ height: '210px' }}>
+      <div className="relative overflow-hidden" style={{ height: '200px' }}>
         <img src={place.image} alt={place.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-        <span className="absolute top-3 left-3 text-xs font-mono font-medium tracking-widest text-white/90 bg-black/60 px-2.5 py-1">{place.category.toUpperCase()}</span>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+        <span className="absolute top-3 left-3 text-xs font-mono font-medium tracking-widest text-white/90 bg-black/50 px-2 py-1">{place.category.toUpperCase()}</span>
         <button onClick={onSave} className={`absolute top-3 right-3 p-1.5 transition-colors ${saved ? 'text-d360-primary' : 'text-white/70 hover:text-white'}`}>
           <IconBookmark active={saved} />
         </button>
-        <div className="absolute bottom-3 right-3 flex items-center gap-1 bg-black/70 px-2 py-1">
-          <span className="text-amber-400 text-xs">★</span>
+        <div className="absolute bottom-3 right-3 flex items-center gap-1 bg-black/60 px-2 py-1">
           <span className="font-mono text-xs font-medium text-white">{place.score}</span>
         </div>
       </div>
       <div className="p-4 flex flex-col gap-2 flex-1">
         <h3 className="font-display text-base font-medium text-d360-ink leading-snug">{place.name}</h3>
         <p className="text-sm text-d360-muted leading-relaxed line-clamp-2">{place.description}</p>
-        <div className="flex items-center gap-4 mt-auto pt-3 border-t border-d360-border">
-          <span className="flex items-center gap-1.5 text-xs text-d360-muted"><IconClock />{place.duration}</span>
-          <span className="flex items-center gap-1.5 text-xs text-d360-muted"><IconMapPin />{place.distance}</span>
+        <div className="flex items-center gap-4 mt-auto pt-2 border-t border-d360-border">
+          <span className="flex items-center gap-1 text-xs text-d360-muted"><IconClock />{place.duration}</span>
+          <span className="flex items-center gap-1 text-xs text-d360-muted"><IconMapPin />{place.distance}</span>
         </div>
         <button className="mt-2 flex items-center gap-2 text-xs font-medium text-d360-primary hover:gap-3 transition-all">Explore <IconArrowRight /></button>
       </div>
@@ -532,23 +263,25 @@ function Nav() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-d360-bg/95 backdrop-blur-sm border-b border-d360-border shadow-sm' : 'bg-transparent'}`}>
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-d360-bg/95 backdrop-blur-sm border-b border-d360-border' : 'bg-transparent'}`}>
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center gap-10">
-            <span className={`font-display text-xl font-bold tracking-wider transition-colors ${scrolled ? 'text-d360-ink' : 'text-white'}`}>DARSHAN360</span>
+            <span className={`font-display text-xl font-medium tracking-wide transition-colors ${scrolled ? 'text-d360-ink' : 'text-white'}`}>D360</span>
             <div className="hidden md:flex items-center gap-7">
-              {['Overview', 'Attractions', 'Tree Houses', 'Tiger Safari', 'Tharu Culture', 'Cuisine', 'Plan Trip'].map(item => (
-                <a key={item} href={`#${item.toLowerCase().replace(/\s+/g, '-')}`} className={`text-sm font-medium transition-colors hover:text-d360-primary ${scrolled ? 'text-d360-ink' : 'text-white/90'}`}>{item}</a>
+              {['Explore', 'Destinations', 'Hidden Gems', 'Plan a Trip', 'Experiences'].map(item => (
+                <a key={item} href="#" className={`text-sm font-medium transition-colors hover:text-d360-primary ${scrolled ? 'text-d360-ink' : 'text-white/90'}`}>{item}</a>
               ))}
             </div>
           </div>
           <div className="hidden md:flex items-center gap-5">
-            <a href="#quick-facts" className={`text-sm font-medium transition-colors ${scrolled ? 'text-d360-muted hover:text-d360-ink' : 'text-white/80 hover:text-white'}`}>Quick Facts</a>
-            <a href="#guidelines" className={`text-sm font-medium transition-colors ${scrolled ? 'text-d360-muted hover:text-d360-ink' : 'text-white/80 hover:text-white'}`}>Permits</a>
-            <button onClick={() => window.open('https://upecotourism.in', '_blank')} className="px-4 py-2 bg-d360-primary text-white text-sm font-medium hover:bg-d360-primary/90 transition-colors shadow-sm" style={{ borderRadius: '2px' }}>Book Safari & Stay</button>
+            <button className={`transition-colors ${scrolled ? 'text-d360-muted hover:text-d360-ink' : 'text-white/80 hover:text-white'}`}><IconSearch /></button>
+            <a href="#" className={`text-sm font-medium transition-colors ${scrolled ? 'text-d360-muted hover:text-d360-ink' : 'text-white/80 hover:text-white'}`}>Saved</a>
+            <a href="#" className={`text-sm font-medium transition-colors ${scrolled ? 'text-d360-muted hover:text-d360-ink' : 'text-white/80 hover:text-white'}`}>Profile</a>
+            <button className="px-4 py-2 bg-d360-primary text-white text-sm font-medium hover:bg-d360-primary/90 transition-colors" style={{ borderRadius: '2px' }}>Explore Places</button>
           </div>
           <div className="flex md:hidden items-center gap-4">
+            <button className={scrolled ? 'text-d360-ink' : 'text-white'}><IconSearch /></button>
             <button className={scrolled ? 'text-d360-ink' : 'text-white'} onClick={() => setMobileOpen(!mobileOpen)}>
               {mobileOpen ? <IconX /> : <IconMenu />}
             </button>
@@ -556,11 +289,11 @@ function Nav() {
         </div>
       </div>
       {mobileOpen && (
-        <div className="md:hidden bg-d360-bg border-t border-d360-border px-6 py-4 flex flex-col gap-3">
-          {['Overview', 'Attractions', 'Tree Houses', 'Tiger Safari', 'Tharu Culture', 'Cuisine', 'Plan Trip', 'Permits'].map(item => (
-            <a key={item} href={`#${item.toLowerCase().replace(/\s+/g, '-')}`} onClick={() => setMobileOpen(false)} className="text-sm font-medium text-d360-ink py-1 border-b border-d360-border last:border-0">{item}</a>
+        <div className="md:hidden bg-d360-bg border-t border-d360-border px-6 py-4 flex flex-col gap-4">
+          {['Explore', 'Destinations', 'Hidden Gems', 'Plan a Trip', 'Experiences', 'Saved', 'Profile'].map(item => (
+            <a key={item} href="#" className="text-sm font-medium text-d360-ink py-1 border-b border-d360-border last:border-0">{item}</a>
           ))}
-          <button onClick={() => window.open('https://upecotourism.in', '_blank')} className="mt-2 py-2.5 bg-d360-primary text-white text-sm font-medium" style={{ borderRadius: '2px' }}>Book Safari & Stay</button>
+          <button className="mt-2 py-3 bg-d360-primary text-white text-sm font-medium" style={{ borderRadius: '2px' }}>Explore Places</button>
         </div>
       )}
     </nav>
@@ -571,113 +304,330 @@ function Nav() {
 
 function Hero({ destination }: { destination: Destination }) {
   const [saved, setSaved] = useState(false)
+  const [muted, setMuted] = useState(true)
+  const [playing, setPlaying] = useState(true)
   return (
-    <section className="relative w-full bg-d360-dark" style={{ height: '88vh', minHeight: '580px' }}>
-      <img src={destination.hero.image} alt={`${destination.name} — ${destination.state}`} className="absolute inset-0 w-full h-full object-cover object-center" />
-      <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.1) 30%, rgba(0,0,0,0.6) 70%, rgba(0,0,0,0.85) 100%)' }} />
-      
+    <section className="relative w-full bg-d360-dark" style={{ height: '85vh', minHeight: '560px' }}>
+      <img src={destination.hero.image} alt={`${destination.name} — ${destination.state}`} className="absolute inset-0 w-full h-full object-cover" />
+      <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.08) 30%, rgba(0,0,0,0.55) 70%, rgba(0,0,0,0.75) 100%)' }} />
       {/* Breadcrumb */}
       <div className="absolute top-20 left-0 right-0 px-6 lg:px-12">
-        <p className="text-white/70 text-xs tracking-widest font-mono">
-          {destination.country.toUpperCase()} &nbsp;/&nbsp; {destination.state.toUpperCase()} &nbsp;/&nbsp; {destination.district.toUpperCase()} &nbsp;/&nbsp; <span className="text-amber-300 font-semibold">{destination.name.toUpperCase()}</span>
+        <p className="text-white/60 text-xs tracking-widest font-medium">
+          {destination.country.toUpperCase()} &nbsp;/&nbsp; {destination.state.toUpperCase()} &nbsp;/&nbsp; {destination.name.toUpperCase()}
         </p>
       </div>
-
-      {/* Floating Save and Status */}
-      <div className="absolute top-20 right-6 lg:right-12 flex items-center gap-3">
-        <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 text-xs font-mono font-medium">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-          ECO-TOURISM ZONE OPEN
-        </span>
-        <button onClick={() => setSaved(!saved)} className={`p-2 rounded bg-black/50 border border-white/20 backdrop-blur-sm transition-colors ${saved ? 'text-d360-primary' : 'text-white/80 hover:text-white'}`}>
-          <IconBookmark active={saved} />
-        </button>
-      </div>
-
-      {/* Hero Body */}
-      <div className="absolute bottom-0 left-0 right-0 px-6 lg:px-12 pb-12">
-        <div className="max-w-4xl flex flex-col gap-4">
-          <div className="flex flex-wrap gap-2">
+      {/* Main content */}
+      <div className="absolute bottom-0 left-0 right-0 px-6 lg:px-12 pb-12 lg:pb-16">
+        <div className="max-w-3xl">
+          <div className="flex items-center gap-2 mb-4">
             {destination.tags.map(tag => (
-              <span key={tag} className="text-[11px] font-mono font-medium tracking-widest text-white/90 bg-black/60 border border-white/10 px-2.5 py-1">
-                {tag}
-              </span>
+              <span key={tag} className="text-xs font-mono tracking-widest text-white/80 border border-white/30 px-3 py-1">{tag}</span>
             ))}
           </div>
-          <div>
-            <h1 className="font-display text-4xl sm:text-6xl font-light text-white tracking-tight leading-none">
-              {destination.name}
-            </h1>
-            <p className="font-serif italic text-xl sm:text-2xl text-amber-200/90 mt-1 font-normal">
-              {destination.localName}
-            </p>
+          <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-medium text-white leading-none tracking-tight mb-2">{destination.name}</h1>
+          <p className="text-white/70 text-sm md:text-base font-medium mb-4 tracking-wide">{destination.state}, {destination.country} &nbsp;·&nbsp; <span className="font-mono text-white/50">{destination.localName}</span></p>
+          <p className="text-white/85 text-base md:text-lg font-light max-w-xl leading-relaxed mb-8">{destination.shortDescription}</p>
+          <div className="flex flex-wrap items-center gap-3">
+            <button className="flex items-center gap-2 px-6 py-3 bg-d360-primary text-white text-sm font-medium hover:bg-d360-primary/90 transition-colors" style={{ borderRadius: '2px' }}>Explore {destination.name} <IconArrowRight /></button>
+            <button onClick={() => setSaved(!saved)} className={`flex items-center gap-2 px-5 py-3 text-sm font-medium border transition-colors ${saved ? 'bg-white text-d360-primary border-white' : 'bg-transparent text-white border-white/50 hover:border-white'}`} style={{ borderRadius: '2px' }}>
+              <IconBookmark active={saved} /> {saved ? 'Saved' : 'Save Place'}
+            </button>
+            <button className="flex items-center gap-2 px-5 py-3 text-sm font-medium text-white border border-white/50 hover:border-white transition-colors" style={{ borderRadius: '2px' }}>
+              Ask D360
+            </button>
           </div>
-          <p className="text-base sm:text-lg text-white/80 max-w-2xl font-light leading-relaxed">
-            {destination.shortDescription}
-          </p>
-
-          {/* Key Metric Chips */}
-          <div className="flex flex-wrap items-center gap-3 pt-2 text-xs font-mono text-white/90">
-            <span className="px-3 py-1.5 bg-white/10 backdrop-blur-sm border border-white/15">📍 {destination.tehsil}</span>
-            <span className="px-3 py-1.5 bg-white/10 backdrop-blur-sm border border-white/15">⏱ Best: {destination.quickFacts.bestTime}</span>
-            <span className="px-3 py-1.5 bg-white/10 backdrop-blur-sm border border-white/15">🐅 Pilibhit Tiger Reserve (TX2 Global Award)</span>
-            <span className="px-3 py-1.5 bg-white/10 backdrop-blur-sm border border-white/15">🌊 Sharda Sagar Dam Reservoir</span>
-          </div>
+        </div>
+        {/* Video controls */}
+        <div className="absolute bottom-8 right-6 lg:right-12 flex items-center gap-3">
+          <button onClick={() => setMuted(!muted)} className="p-2.5 bg-black/40 text-white/70 hover:text-white hover:bg-black/60 transition-colors border border-white/10" style={{ borderRadius: '2px' }}><IconVolume /></button>
+          <button onClick={() => setPlaying(!playing)} className="p-2.5 bg-black/40 text-white/70 hover:text-white hover:bg-black/60 transition-colors border border-white/10" style={{ borderRadius: '2px' }}>{playing ? <IconPause /> : <IconPlay />}</button>
+        </div>
+        {/* Scroll indicator */}
+        <div className="hidden lg:flex items-center gap-2 absolute bottom-10 left-1/2 -translate-x-1/2 text-white/50 text-xs tracking-widest">
+          <span className="w-px h-8 bg-white/30 block" />
+          <span className="rotate-90 whitespace-nowrap text-[10px] tracking-[0.2em]">SCROLL TO EXPLORE</span>
         </div>
       </div>
     </section>
   )
 }
 
-// ─── Quick Facts Ribbon ───────────────────────────────────────────────────────
+// ─── Quick Facts Strip ────────────────────────────────────────────────────────
 
-function QuickFactsRibbon({ facts }: { facts: QuickFact }) {
+function QuickFacts({ facts }: { facts: QuickFact }) {
   const items = [
     { label: 'BEST TIME', value: facts.bestTime, icon: <IconSun /> },
-    { label: 'RECOMMENDED STAY', value: facts.duration, icon: <IconClock /> },
-    { label: 'BUDGET TIER', value: facts.budget, icon: <span className="font-mono font-bold text-xs">₹</span> },
-    { label: 'TYPE', value: facts.destinationType, icon: <IconMapPin /> },
-    { label: 'DIFFICULTY', value: facts.difficulty, icon: <span className="text-xs">⚡</span> },
-    { label: 'CONNECTIVITY', value: facts.distance, icon: <IconCar /> }
+    { label: 'IDEAL DURATION', value: facts.duration, icon: <IconClock /> },
+    { label: 'BUDGET', value: facts.budget, icon: null },
+    { label: 'DESTINATION TYPE', value: facts.destinationType, icon: null },
+    { label: 'DIFFICULTY', value: facts.difficulty, icon: null },
+    { label: 'DISTANCE', value: facts.distance, icon: <IconMapPin /> }
   ]
   return (
-    <section id="quick-facts" className="bg-white border-b border-d360-border py-6 px-6 lg:px-12">
-      <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-        {items.map(item => (
-          <div key={item.label} className="flex flex-col gap-1 border-l-2 border-d360-primary/60 pl-3">
-            <span className="text-[11px] font-mono tracking-widest text-d360-muted uppercase">{item.label}</span>
-            <span className="font-display text-sm font-semibold text-d360-ink leading-tight">{item.value}</span>
-          </div>
-        ))}
+    <section className="bg-d360-ink border-b border-white/10">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-3 md:grid-cols-6 divide-x divide-white/10">
+          {items.map((item) => (
+            <div key={item.label} className="px-5 py-5 lg:py-6">
+              <p className="text-white/40 text-[10px] font-mono tracking-widest mb-1.5">{item.label}</p>
+              <div className="flex items-center gap-1.5 text-white/90">
+                {item.icon && <span className="text-d360-primary/80">{item.icon}</span>}
+                <span className="font-medium text-sm">{item.value}</span>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   )
 }
 
-// ─── Discovery Score Section ──────────────────────────────────────────────────
+// ─── Why Visit + Discovery Score ──────────────────────────────────────────────
 
-function DiscoveryScoreSection({ score }: { score: DiscoveryScore }) {
+function WhyVisit({ destination }: { destination: Destination }) {
   return (
-    <section className="bg-d360-bg border-b border-d360-border py-12 px-6 lg:px-12">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
-        <div className="flex items-center gap-6">
-          <div className="w-20 h-20 rounded-full bg-d360-primary/10 border-2 border-d360-primary flex flex-col items-center justify-center">
-            <span className="font-mono text-2xl font-bold text-d360-primary leading-none">{score.overall}</span>
-            <span className="text-[10px] font-mono text-d360-muted tracking-wider">OUT OF 10</span>
-          </div>
+    <section className="bg-d360-bg py-16 lg:py-24">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="grid lg:grid-cols-2 gap-16 items-start">
           <div>
-            <h2 className="font-display text-xl font-bold text-d360-ink">D360 Ecotourism Discovery Score</h2>
-            <p className="text-sm text-d360-muted mt-0.5">Evaluated across ecological virginity, wildlife safety, and authentic local heritage.</p>
+            <p className="text-d360-primary text-xs font-mono tracking-widest mb-4">WHY VISIT</p>
+            <h2 className="font-display text-3xl md:text-4xl text-d360-ink mb-6 leading-tight">Why {destination.name}?</h2>
+            <p className="text-d360-muted text-lg leading-relaxed">{destination.editorial.why}</p>
+          </div>
+          <div className="border border-d360-border p-8" style={{ borderRadius: '2px' }}>
+            <div className="flex items-end justify-between mb-8">
+              <div>
+                <p className="text-d360-muted text-xs font-mono tracking-widest mb-1">D360 DISCOVERY SCORE</p>
+                <div className="flex items-end gap-2">
+                  <span className="font-display text-5xl font-medium text-d360-ink">{destination.discoveryScore.overall}</span>
+                  <span className="text-d360-muted text-lg mb-1.5">/ 10</span>
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="text-xs text-d360-muted font-mono">HIGHLY RECOMMENDED</p>
+              </div>
+            </div>
+            <div className="flex flex-col gap-4">
+              {destination.discoveryScore.categories.map(cat => (
+                <div key={cat.name}>
+                  <div className="flex justify-between items-center mb-1.5">
+                    <span className="text-sm text-d360-ink font-medium">{cat.name}</span>
+                    <span className="font-mono text-sm text-d360-muted">{cat.score}</span>
+                  </div>
+                  <div className="h-1 bg-d360-border">
+                    <div className="h-full bg-d360-primary transition-all duration-700" style={{ width: `${(cat.score / 10) * 100}%` }} />
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 w-full md:w-auto">
-          {score.categories.map(cat => (
-            <div key={cat.name} className="bg-white border border-d360-border p-3 flex flex-col gap-1" style={{ borderRadius: '2px' }}>
-              <span className="text-[10px] font-mono tracking-wider text-d360-muted uppercase truncate">{cat.name}</span>
-              <div className="flex items-center justify-between">
-                <span className="font-mono text-base font-bold text-d360-ink">{cat.score}</span>
-                <div className="w-12 bg-gray-100 h-1.5 rounded-full overflow-hidden">
-                  <div className="bg-d360-primary h-full" style={{ width: `${(cat.score / 10) * 100}%` }} />
+      </div>
+    </section>
+  )
+}
+
+// ─── Destination Story ────────────────────────────────────────────────────────
+
+function DestinationStory({ destination }: { destination: Destination }) {
+  const [expanded, setExpanded] = useState(false)
+  return (
+    <section className="bg-d360-surface py-16 lg:py-24">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          <div>
+            <p className="text-d360-primary text-xs font-mono tracking-widest mb-4">DESTINATION STORY</p>
+            <h2 className="font-display text-3xl md:text-4xl text-d360-ink mb-6 leading-tight">The Story of {destination.name}</h2>
+            <p className="text-d360-ink/80 text-base leading-relaxed mb-4">{destination.editorial.story}</p>
+            {expanded && <p className="text-d360-ink/80 text-base leading-relaxed mb-4">{destination.editorial.storyFull}</p>}
+            <button onClick={() => setExpanded(!expanded)} className="flex items-center gap-2 text-d360-primary text-sm font-medium hover:gap-3 transition-all">
+              {expanded ? 'Show less' : 'Read more'} <span className={`transition-transform ${expanded ? 'rotate-90' : ''}`}><IconArrowRight /></span>
+            </button>
+          </div>
+          <div className="relative">
+            <img src={destination.hero.poster || destination.hero.image} alt={`The story of ${destination.name}`} className="w-full object-cover" style={{ height: '420px', borderRadius: '2px' }} />
+            <div className="absolute -bottom-4 -left-4 hidden lg:block bg-d360-ink text-white px-6 py-4" style={{ maxWidth: '240px', borderRadius: '2px' }}>
+              <p className="font-mono text-xs text-white/50 mb-1">ESTABLISHED</p>
+              <p className="font-display text-xl font-medium">2002 AD</p>
+              <p className="text-xs text-white/60 mt-1">Pilibhit Tiger Reserve</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── History Timeline ─────────────────────────────────────────────────────────
+
+function HistoryTimeline({ destination }: { destination: Destination }) {
+  const [showAll, setShowAll] = useState(false)
+  const shown = showAll ? destination.history.timeline : destination.history.timeline.slice(0, 4)
+  return (
+    <section className="bg-d360-bg py-16 lg:py-24">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="max-w-2xl mb-12">
+          <p className="text-d360-primary text-xs font-mono tracking-widest mb-4">HISTORY & HERITAGE</p>
+          <h2 className="font-display text-3xl md:text-4xl text-d360-ink leading-tight">A City Written in History</h2>
+          <p className="text-d360-muted mt-4">{destination.history.shortIntro}</p>
+        </div>
+        <div className="relative">
+          <div className="absolute left-[88px] top-0 bottom-0 w-px bg-d360-border hidden md:block" />
+          <div className="flex flex-col gap-0">
+            {shown.map((entry, i) => (
+              <div key={i} className="flex gap-8 md:gap-0 group">
+                <div className="hidden md:flex items-start pt-6 w-[88px] shrink-0 justify-end pr-8">
+                  <span className="font-mono text-sm font-medium text-d360-primary">{entry.year}</span>
+                </div>
+                <div className="hidden md:flex items-start pt-7 shrink-0 relative">
+                  <div className="w-3 h-3 rounded-full border-2 border-d360-primary bg-d360-bg group-hover:bg-d360-primary transition-colors -translate-x-1.5" />
+                </div>
+                <div className="flex-1 pb-8 pl-0 md:pl-8 pt-4 md:pt-5 border-b border-d360-border last:border-0">
+                  <span className="md:hidden font-mono text-xs text-d360-primary mb-1 block">{entry.year}</span>
+                  <span className="inline-block text-[10px] font-mono tracking-widest text-d360-muted border border-d360-border px-2 py-0.5 mb-2">{entry.era.toUpperCase()}</span>
+                  <p className="text-d360-ink/85 text-sm leading-relaxed">{entry.event}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          {!showAll && destination.history.timeline.length > 4 && (
+            <button onClick={() => setShowAll(true)} className="mt-8 flex items-center gap-2 text-d360-primary text-sm font-medium hover:gap-3 transition-all">
+              View Full History <IconArrowRight />
+            </button>
+          )}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── Culture Grid ─────────────────────────────────────────────────────────────
+
+function CultureGrid({ destination }: { destination: Destination }) {
+  return (
+    <section className="bg-d360-surface py-16 lg:py-24">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="mb-12">
+          <p className="text-d360-primary text-xs font-mono tracking-widest mb-4">CULTURE & SIGNIFICANCE</p>
+          <h2 className="font-display text-3xl md:text-4xl text-d360-ink leading-tight">The Soul of {destination.name}</h2>
+        </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-d360-border">
+          {destination.culture.map((card) => (
+            <div key={card.title} className="group bg-d360-surface hover:bg-d360-bg transition-colors">
+              <div className="overflow-hidden" style={{ height: '200px' }}>
+                <img src={card.image} alt={card.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              </div>
+              <div className="p-6">
+                <h3 className="font-display text-lg text-d360-ink mb-3">{card.title}</h3>
+                <p className="text-sm text-d360-muted leading-relaxed">{card.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── Food Section ─────────────────────────────────────────────────────────────
+
+function FoodSection({ destination }: { destination: Destination }) {
+  return (
+    <section className="bg-d360-bg py-16 lg:py-24">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="flex items-end justify-between mb-10">
+          <div>
+            <p className="text-d360-primary text-xs font-mono tracking-widest mb-4">LOCAL FOOD</p>
+            <h2 className="font-display text-3xl md:text-4xl text-d360-ink leading-tight">Taste of {destination.name}</h2>
+            <p className="text-d360-muted mt-2 text-sm">Don't leave without trying these.</p>
+          </div>
+          <button className="hidden md:flex items-center gap-2 text-sm font-medium text-d360-primary hover:gap-3 transition-all">Explore Local Food <IconArrowRight /></button>
+        </div>
+        <div className="flex gap-5 overflow-x-auto scrollbar-hide pb-2 -mx-6 px-6 md:mx-0 md:px-0 md:grid md:grid-cols-3 lg:grid-cols-5">
+          {destination.food.map((item) => (
+            <div key={item.name} className="shrink-0 w-64 md:w-auto border border-d360-border bg-white hover:border-d360-muted transition-colors group" style={{ borderRadius: '2px' }}>
+              <div className="overflow-hidden" style={{ height: '160px' }}>
+                <img src={item.image} alt={item.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              </div>
+              <div className="p-4">
+                <span className="text-[10px] font-mono tracking-widest text-d360-primary uppercase">{item.category}</span>
+                <h3 className="font-display text-base text-d360-ink mt-1 mb-2">{item.name}</h3>
+                <p className="text-xs text-d360-muted leading-relaxed line-clamp-2">{item.description}</p>
+                <p className="text-xs font-mono text-d360-muted mt-3 pt-3 border-t border-d360-border">{item.price}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <button className="md:hidden mt-6 flex items-center gap-2 text-sm font-medium text-d360-primary">Explore Local Food <IconArrowRight /></button>
+      </div>
+    </section>
+  )
+}
+
+// ─── Attractions Grid ─────────────────────────────────────────────────────────
+
+function AttractionsGrid({ destination }: { destination: Destination }) {
+  const tabs = ['All', 'Heritage', 'Hidden Gems', 'Nature', 'Culture', 'Food']
+  const [activeTab, setActiveTab] = useState('All')
+  const [savedIds, setSavedIds] = useState<Set<string>>(new Set())
+  const shown = activeTab === 'All' ? destination.attractions : destination.attractions.filter(a => a.category.toLowerCase().includes(activeTab.toLowerCase()))
+  return (
+    <section className="bg-d360-surface py-16 lg:py-24">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="mb-10">
+          <p className="text-d360-primary text-xs font-mono tracking-widest mb-4">EXPLORE</p>
+          <h2 className="font-display text-3xl md:text-4xl text-d360-ink leading-tight mb-8">Places to Explore</h2>
+          <div className="flex gap-1 overflow-x-auto scrollbar-hide">
+            {tabs.map(tab => (
+              <button key={tab} onClick={() => setActiveTab(tab)} className={`shrink-0 px-4 py-2 text-xs font-mono tracking-wider border transition-colors ${activeTab === tab ? 'bg-d360-primary text-white border-d360-primary' : 'bg-transparent text-d360-muted border-d360-border hover:text-d360-ink hover:border-d360-ink'}`} style={{ borderRadius: '2px' }}>
+                {tab.toUpperCase()}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {(shown.length > 0 ? shown : destination.attractions).map(place => (
+            <PlaceCard key={place.id} place={place} saved={savedIds.has(place.id)} onSave={() => setSavedIds(prev => { const n = new Set(prev); n.has(place.id) ? n.delete(place.id) : n.add(place.id); return n })} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── Hidden Gems ─────────────────────────────────────────────────────────────
+
+function HiddenGems({ destination }: { destination: Destination }) {
+  return (
+    <section className="bg-d360-ink py-16 lg:py-24">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="mb-12">
+          <p className="text-d360-primary text-xs font-mono tracking-widest mb-4">D360 HIDDEN GEMS</p>
+          <h2 className="font-display text-3xl md:text-4xl text-white leading-tight">Beyond the Famous</h2>
+          <p className="text-white/50 mt-2 text-sm">Places most visitors miss.</p>
+        </div>
+        <div className="grid md:grid-cols-3 gap-px bg-white/10">
+          {destination.hiddenGems.map((gem) => (
+            <div key={gem.name} className="group bg-d360-ink hover:bg-white/5 transition-colors">
+              <div className="overflow-hidden relative" style={{ height: '260px' }}>
+                <img src={gem.image} alt={gem.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 opacity-70 group-hover:opacity-85" />
+                <div className="absolute inset-0 bg-gradient-to-t from-d360-ink/80 to-transparent" />
+                <div className="absolute top-3 left-3">
+                  <span className="text-[10px] font-mono tracking-widest text-d360-primary border border-d360-primary/50 px-2 py-1">HIDDEN GEM</span>
+                </div>
+              </div>
+              <div className="p-6">
+                <h3 className="font-display text-xl text-white mb-3">{gem.name}</h3>
+                <p className="text-white/60 text-sm leading-relaxed mb-5">{gem.why}</p>
+                <div className="flex gap-6">
+                  <div>
+                    <p className="text-white/30 text-[10px] font-mono tracking-widest mb-1">DISTANCE</p>
+                    <p className="text-white/80 text-xs">{gem.distance}</p>
+                  </div>
+                  <div>
+                    <p className="text-white/30 text-[10px] font-mono tracking-widest mb-1">DURATION</p>
+                    <p className="text-white/80 text-xs">{gem.duration}</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -688,96 +638,29 @@ function DiscoveryScoreSection({ score }: { score: DiscoveryScore }) {
   )
 }
 
-// ─── Editorial Story Section ──────────────────────────────────────────────────
+// ─── Things To Do ─────────────────────────────────────────────────────────────
 
-function EditorialSection({ editorial }: { editorial: Destination['editorial'] }) {
-  const [expanded, setExpanded] = useState(false)
+function ThingsToDo({ destination }: { destination: Destination }) {
   return (
-    <section id="overview" className="py-16 px-6 lg:px-12 max-w-7xl mx-auto">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-        <div className="lg:col-span-5 flex flex-col gap-4">
-          <span className="text-xs font-mono font-bold tracking-widest text-d360-primary uppercase">EDITORIAL PERSPECTIVE</span>
-          <h2 className="font-display text-3xl sm:text-4xl font-light text-d360-ink leading-tight">
-            Where Tropical Beach Vibe Meets Deep-Jungle Tiger Country
-          </h2>
-          <blockquote className="border-l-2 border-d360-primary pl-4 text-base italic text-d360-ink/90 font-serif leading-relaxed">
-            "{editorial.why}"
-          </blockquote>
-          <div className="mt-4 p-4 bg-amber-50/60 border border-amber-200/60 rounded flex flex-col gap-1">
-            <span className="font-mono text-xs font-bold text-amber-900 tracking-wide uppercase">UNIQUE SELLING PROPOSITION (USP)</span>
-            <p className="text-xs text-amber-800 leading-relaxed">
-              Uttar Pradesh’s only forest beach experience. Offers the serene aesthetics of a white-sand beach vacation combined with high-probability big-cat wildlife tracking—entirely free of hawkers and commercial noise.
-            </p>
-          </div>
+    <section className="bg-d360-bg py-16 lg:py-24">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="mb-10">
+          <p className="text-d360-primary text-xs font-mono tracking-widest mb-4">ACTIVITIES</p>
+          <h2 className="font-display text-3xl md:text-4xl text-d360-ink leading-tight">Things To Do</h2>
         </div>
-        <div className="lg:col-span-7 flex flex-col gap-4 text-d360-muted text-base leading-relaxed">
-          <p>{editorial.story}</p>
-          <p>{editorial.storyFull}</p>
-          {expanded && (
-            <div className="flex flex-col gap-3 pt-2 text-sm text-d360-muted/90 border-t border-d360-border">
-              <p>
-                <strong>Conservation Significance:</strong> Chuka Beach is within the Mustafabad range of Pilibhit Tiger Reserve, which shares a contiguous ecological corridor with Shuklaphanta National Park in Nepal and Kishanpur Wildlife Sanctuary. In 2020, the reserve was internationally honored with the TX2 award for doubling its wild tiger population in just over a decade.
-              </p>
-              <p>
-                <strong>The Non-Coastal Shoreline:</strong> While ocean waves are salty and unpredictable, the waters of Sharda Sagar are crystal-clear Himalayan freshwater fed by the Sharda River and Banbasa barrage, creating soft white sandy banks that contrast sharply with dense dark-green Sal timber stands.
-              </p>
-            </div>
-          )}
-          <button onClick={() => setExpanded(!expanded)} className="self-start text-xs font-mono font-bold text-d360-primary hover:underline mt-2">
-            {expanded ? 'SHOW LESS' : 'READ FULL ECOLOGICAL OVERVIEW →'}
-          </button>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-// ─── Key Highlights Showcase ──────────────────────────────────────────────────
-
-function HighlightsGrid() {
-  const highlights = [
-    {
-      title: "Elevated Tree Machans & Water Huts",
-      subtitle: "Vernacular Tharu architecture built without concrete footprint",
-      image: "/images/treehouse_hut.jpg",
-      tag: "ECO LIVING"
-    },
-    {
-      title: "Mustafabad 4x4 Tiger Safari",
-      subtitle: "Dense Sal canopies and Terai grasslands tracking Royal Bengal tigers",
-      image: "/images/pilibhit_tiger.jpg",
-      tag: "WILDLIFE"
-    },
-    {
-      title: "Sharda Sagar Dam Reservoir",
-      subtitle: "22-km freshwater lake hosting flocks of Siberian migratory geese",
-      image: "/images/sharda_sagar_dam.jpg",
-      tag: "SCENIC EXPEDITION"
-    },
-    {
-      title: "Pilibhit Bansuri GI-Craft",
-      subtitle: "India's flute capital producing hand-turned musical bamboo instruments",
-      image: "/images/bansuri_chowk.jpg",
-      tag: "ODOP CRAFT"
-    }
-  ]
-  return (
-    <section className="bg-d360-dark text-white py-16 px-6 lg:px-12">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col gap-2 mb-10">
-          <span className="text-xs font-mono tracking-widest text-amber-400 uppercase font-semibold">THE CHUKA SIGNATURES</span>
-          <h2 className="font-display text-3xl font-light text-white">Curated Pillars of the Experience</h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {highlights.map(h => (
-            <div key={h.title} className="group relative overflow-hidden rounded bg-black/40 border border-white/10 hover:border-amber-400/50 transition-colors flex flex-col">
-              <div className="h-48 overflow-hidden">
-                <img src={h.image} alt={h.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-5">
+          {destination.thingsToDo.map((item) => (
+            <div key={item.activity} className="group border border-d360-border bg-white hover:border-d360-muted transition-colors" style={{ borderRadius: '2px' }}>
+              <div className="overflow-hidden" style={{ height: '140px' }}>
+                <img src={item.image} alt={item.activity} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
               </div>
-              <div className="p-4 flex flex-col gap-1 flex-1">
-                <span className="text-[10px] font-mono tracking-wider text-amber-300 font-semibold">{h.tag}</span>
-                <h3 className="font-display text-lg font-medium text-white group-hover:text-amber-200 transition-colors">{h.title}</h3>
-                <p className="text-xs text-white/70 leading-relaxed mt-1">{h.subtitle}</p>
+              <div className="p-4">
+                <h3 className="font-display text-sm text-d360-ink mb-3">{item.activity}</h3>
+                <div className="flex flex-col gap-1.5">
+                  <div className="flex items-center gap-1.5 text-xs text-d360-muted"><IconClock />{item.duration}</div>
+                  <div className="flex items-center gap-1.5 text-xs text-d360-muted"><span className="font-mono">{item.cost}</span></div>
+                  <div className="text-xs text-d360-muted">{item.bestTime}</div>
+                </div>
               </div>
             </div>
           ))}
@@ -787,286 +670,217 @@ function HighlightsGrid() {
   )
 }
 
-// ─── Attractions & Exploration ────────────────────────────────────────────────
+// ─── Nearby Places ────────────────────────────────────────────────────────────
 
-function AttractionsSection({ attractions, savedList, toggleSave }: { attractions: Attraction[]; savedList: string[]; toggleSave: (id: string) => void }) {
-  const [filter, setFilter] = useState('all')
-  const categories = ['all', 'Waterfront', 'Wildlife', 'Vernacular', 'Cultural']
-  const filtered = filter === 'all' ? attractions : attractions.filter(a => a.category.toLowerCase().includes(filter.toLowerCase()))
-
+function NearbyPlaces({ destination }: { destination: Destination }) {
+  const filters = ['5 km', '25 km', '50 km', '100 km', 'All']
+  const [filter, setFilter] = useState('All')
+  const shown = filter === 'All' ? destination.nearbyPlaces : destination.nearbyPlaces.filter(p => {
+    const km = parseInt(p.distance)
+    const limit = parseInt(filter)
+    return km <= limit
+  })
   return (
-    <section id="attractions" className="py-16 px-6 lg:px-12 max-w-7xl mx-auto">
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
-        <div>
-          <span className="text-xs font-mono font-bold tracking-widest text-d360-primary uppercase">PLACES TO EXPLORE</span>
-          <h2 className="font-display text-3xl font-light text-d360-ink mt-1">Core Attractions & Enclaves</h2>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {categories.map(cat => (
-            <button
-              key={cat}
-              onClick={() => setFilter(cat)}
-              className={`px-3 py-1.5 text-xs font-mono uppercase tracking-wider transition-colors ${filter === cat ? 'bg-d360-primary text-white font-semibold' : 'bg-white border border-d360-border text-d360-muted hover:border-d360-muted'}`}
-              style={{ borderRadius: '2px' }}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filtered.map(item => (
-          <PlaceCard key={item.id} place={item} saved={savedList.includes(item.id)} onSave={() => toggleSave(item.id)} />
-        ))}
-      </div>
-    </section>
-  )
-}
-
-// ─── Hidden Gems ──────────────────────────────────────────────────────────────
-
-function HiddenGemsSection({ gems }: { gems: HiddenGem[] }) {
-  return (
-    <section className="bg-amber-50/40 border-y border-amber-200/50 py-16 px-6 lg:px-12">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col gap-2 mb-8">
-          <span className="text-xs font-mono font-bold tracking-widest text-amber-800 uppercase">OFF THE BEATEN TRACK</span>
-          <h2 className="font-display text-3xl font-light text-d360-ink">Terai Hidden Gems & Quiet Corners</h2>
-          <p className="text-sm text-d360-muted max-w-xl">Exclusive outposts often missed by casual day-trippers that offer intimate encounters with nature and heritage.</p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {gems.map(gem => (
-            <div key={gem.name} className="bg-white border border-amber-200/70 p-5 rounded flex flex-col gap-3 shadow-xs">
-              <div className="h-44 overflow-hidden rounded">
-                <img src={gem.image} alt={gem.name} className="w-full h-full object-cover" />
-              </div>
-              <h3 className="font-display text-lg font-semibold text-d360-ink">{gem.name}</h3>
-              <p className="text-xs text-d360-muted leading-relaxed flex-1">{gem.why}</p>
-              <div className="flex items-center justify-between text-[11px] font-mono text-d360-primary pt-3 border-t border-amber-100">
-                <span>📍 {gem.distance}</span>
-                <span>⏱ {gem.duration}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
-// ─── Wildlife & Safari Details ────────────────────────────────────────────────
-
-function WildlifeSafariSection() {
-  return (
-    <section id="tiger-safari" className="py-16 px-6 lg:px-12 max-w-7xl mx-auto">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-        <div className="lg:col-span-6 relative overflow-hidden rounded border border-d360-border shadow-sm">
-          <img src="/images/pilibhit_tiger.jpg" alt="Tiger on the road at Pilibhit Tiger Reserve" className="w-full h-auto object-cover" />
-          <div className="absolute bottom-3 left-3 bg-black/70 text-white text-xs font-mono px-3 py-1.5 backdrop-blur-sm">
-            TIGER SAFARI TRACK — MUSTAFABAD RANGE
-          </div>
-        </div>
-        <div className="lg:col-span-6 flex flex-col gap-4">
-          <span className="text-xs font-mono font-bold tracking-widest text-d360-primary uppercase">WILDLIFE & ECOLOGY</span>
-          <h2 className="font-display text-3xl font-light text-d360-ink leading-tight">
-            Mustafabad Jungle Safaris & Big Cat Corridors
-          </h2>
-          <p className="text-sm text-d360-muted leading-relaxed">
-            Pilibhit Tiger Reserve spans over 730 sq km along the Terai Arc Landscape. The Mustafabad range surrounding Chuka Beach hosts an exceptional density of Royal Bengal Tigers (<em>Panthera tigris</em>), Indian leopards, sloth bears, swamp deer (Barasingha), and wild boars.
-          </p>
-          <div className="grid grid-cols-2 gap-4 my-2">
-            <div className="p-3 bg-emerald-50 border border-emerald-200 rounded">
-              <span className="text-xs font-bold text-emerald-900 font-mono">MORNING SAFARI SHIFT</span>
-              <p className="text-xs text-emerald-800 mt-1">06:30 AM – 10:00 AM<br />Best for tiger pugmark tracking & bird flight</p>
-            </div>
-            <div className="p-3 bg-amber-50 border border-amber-200 rounded">
-              <span className="text-xs font-bold text-amber-900 font-mono">AFTERNOON SHIFT</span>
-              <p className="text-xs text-amber-800 mt-1">02:30 PM – 05:30 PM<br />Best for waterhole stakeouts & golden sunset</p>
-            </div>
-          </div>
-          <div className="flex flex-col gap-2 text-xs text-d360-ink bg-gray-50 p-4 border border-d360-border rounded">
-            <span className="font-semibold font-mono text-d360-primary">SAFARI BOOKING RULES & TARIFF:</span>
-            <span>• Gypsy Tariff: ₹3,600 to ₹4,500 per vehicle (accommodates up to 6 visitors + guide + driver).</span>
-            <span>• Compulsory Govt Guide fee & park entry permits included.</span>
-            <span>• Advance booking mandatory on official UP Ecotourism portal (upecotourism.in). Carry original Govt ID proof.</span>
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-// ─── Tree Houses & Tharu Accommodation ────────────────────────────────────────
-
-function TreeHouseSection() {
-  return (
-    <section id="tree-houses" className="bg-stone-100 py-16 px-6 lg:px-12 border-y border-stone-200">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
-          <div>
-            <span className="text-xs font-mono font-bold tracking-widest text-emerald-800 uppercase">ECO-LIVING IN THE CANOPY</span>
-            <h2 className="font-display text-3xl font-light text-d360-ink mt-1">Water Huts & Elevated Wooden Machans</h2>
-          </div>
-          <button onClick={() => window.open('https://upecotourism.in', '_blank')} className="px-5 py-2.5 bg-emerald-800 text-white text-xs font-mono font-bold tracking-wider hover:bg-emerald-900 transition-colors self-start md:self-auto rounded">
-            BOOK HUT ON UP ECOTOURISM PORTAL →
-          </button>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-          <div className="flex flex-col gap-4">
-            <p className="text-sm text-stone-700 leading-relaxed">
-              Constructed following vernacular Tharu tribal architecture, the accommodation at Chuka Beach comprises elevated bamboo machans and thatched wooden cottages standing at the very edge of the Sharda Sagar Dam.
-            </p>
-            <div className="flex flex-col gap-3">
-              <div className="p-4 bg-white border border-stone-200 rounded">
-                <h4 className="font-display text-base font-semibold text-stone-900">Tree Machans (Waterfront Canopy Huts)</h4>
-                <p className="text-xs text-stone-600 mt-1">Elevated on sturdy Sal poles overlooking the reservoir with wooden balconies. Excellent for sunrise misty lake panoramas.</p>
-                <span className="inline-block mt-2 font-mono text-xs font-bold text-emerald-700">Tariff: ₹3,500 – ₹7,600 / night</span>
-              </div>
-              <div className="p-4 bg-white border border-stone-200 rounded">
-                <h4 className="font-display text-base font-semibold text-stone-900">Tharu Bamboo Eco-Cottages</h4>
-                <p className="text-xs text-stone-600 mt-1">Ground-level natural cottages crafted from woven bamboo reeds and earthen thatch, keeping interiors naturally cool in summer and warm in winter.</p>
-                <span className="inline-block mt-2 font-mono text-xs font-bold text-emerald-700">Tariff: ₹2,400 – ₹4,500 / night</span>
-              </div>
-            </div>
-            <div className="text-xs text-amber-900 bg-amber-100/70 p-3 rounded border border-amber-300/60 font-mono">
-              ⚠️ Note: Forest department huts have limited availability (typically 4–6 units) and sell out weeks in advance during winter peak season (Dec–Jan).
-            </div>
-          </div>
-          <div className="h-96 rounded overflow-hidden shadow-sm border border-stone-300">
-            <img src="/images/treehouse_hut.jpg" alt="Treehouse and bamboo eco hut at Chuka" className="w-full h-full object-cover" />
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-// ─── History & Timeline ───────────────────────────────────────────────────────
-
-function HistorySection({ history }: { history: Destination['history'] }) {
-  return (
-    <section className="py-16 px-6 lg:px-12 max-w-7xl mx-auto">
-      <div className="flex flex-col gap-2 mb-10">
-        <span className="text-xs font-mono font-bold tracking-widest text-d360-primary uppercase">CHRONICLES & CONSERVATION</span>
-        <h2 className="font-display text-3xl font-light text-d360-ink">Historical Timeline & Evolution</h2>
-        <p className="text-sm text-d360-muted max-w-xl">{history.shortIntro}</p>
-      </div>
-      <div className="relative border-l-2 border-d360-border pl-6 ml-4 flex flex-col gap-8">
-        {history.timeline.map((item, idx) => (
-          <div key={idx} className="relative flex flex-col gap-1">
-            <div className="absolute -left-[31px] top-1.5 w-3.5 h-3.5 rounded-full bg-d360-primary border-2 border-white ring-2 ring-d360-primary/30" />
-            <div className="flex items-center gap-3">
-              <span className="font-mono text-sm font-bold text-d360-primary">{item.year}</span>
-              <span className="text-[10px] font-mono uppercase tracking-wider text-d360-muted bg-gray-100 px-2 py-0.5 rounded">{item.era}</span>
-            </div>
-            <p className="text-sm text-d360-ink/90 leading-relaxed mt-0.5">{item.event}</p>
-          </div>
-        ))}
-      </div>
-    </section>
-  )
-}
-
-// ─── Culture & Handicrafts ────────────────────────────────────────────────────
-
-function CultureSection({ culture }: { culture: CultureCard[] }) {
-  return (
-    <section id="tharu-culture" className="bg-d360-bg border-y border-d360-border py-16 px-6 lg:px-12">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col gap-2 mb-10">
-          <span className="text-xs font-mono font-bold tracking-widest text-d360-primary uppercase">TERAI HERITAGE</span>
-          <h2 className="font-display text-3xl font-light text-d360-ink">Culture, Tribal Folkways & GI Crafts</h2>
-          <p className="text-sm text-d360-muted max-w-2xl">From the mystical forest lore of the indigenous Tharu tribe to Pilibhit's world-renowned bansuri flutes.</p>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {culture.map(card => (
-            <div key={card.title} className="bg-white border border-d360-border rounded flex flex-col overflow-hidden group hover:border-d360-muted transition-colors">
-              <div className="h-44 overflow-hidden">
-                <img src={card.image} alt={card.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-              </div>
-              <div className="p-4 flex flex-col gap-2 flex-1">
-                <h3 className="font-display text-base font-semibold text-d360-ink">{card.title}</h3>
-                <p className="text-xs text-d360-muted leading-relaxed flex-1">{card.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
-// ─── Culinary Guide ───────────────────────────────────────────────────────────
-
-function FoodSection({ food }: { food: FoodItem[] }) {
-  return (
-    <section id="cuisine" className="py-16 px-6 lg:px-12 max-w-7xl mx-auto">
-      <div className="flex flex-col gap-2 mb-10">
-        <span className="text-xs font-mono font-bold tracking-widest text-d360-primary uppercase">TASTE OF PILIBHIT & TERAI</span>
-        <h2 className="font-display text-3xl font-light text-d360-ink">Rustic Wood-Fired Delicacies</h2>
-        <p className="text-sm text-d360-muted max-w-xl">Hearty rural North Indian recipes cooked with pure country desi ghee, fresh mustard greens, and wholesome millets.</p>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {food.map(item => (
-          <div key={item.name} className="flex border border-d360-border bg-white rounded overflow-hidden hover:border-d360-muted transition-colors">
-            <div className="w-1/3 min-w-[110px] overflow-hidden">
-              <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-            </div>
-            <div className="p-4 flex flex-col justify-between flex-1 gap-1">
-              <div>
-                <span className="text-[10px] font-mono uppercase tracking-widest text-d360-primary font-semibold">{item.category}</span>
-                <h3 className="font-display text-sm font-semibold text-d360-ink leading-snug">{item.name}</h3>
-                <p className="text-xs text-d360-muted leading-relaxed mt-1 line-clamp-2">{item.description}</p>
-              </div>
-              <span className="font-mono text-xs font-bold text-emerald-700">{item.price}</span>
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
-  )
-}
-
-// ─── Itineraries & Planner ────────────────────────────────────────────────────
-
-function ItinerarySection({ itineraries }: { itineraries: Destination['itineraries'] }) {
-  const [activePlan, setActivePlan] = useState('1-Day Express')
-  const plans = Object.keys(itineraries)
-
-  return (
-    <section id="plan-trip" className="bg-stone-50 py-16 px-6 lg:px-12 border-t border-stone-200">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
-          <div>
-            <span className="text-xs font-mono font-bold tracking-widest text-d360-primary uppercase">CURATED TRIP BLUEPRINTS</span>
-            <h2 className="font-display text-3xl font-light text-d360-ink mt-1">Trip Schedules & Action Plans</h2>
-          </div>
-          <div className="flex gap-2">
-            {plans.map(p => (
-              <button
-                key={p}
-                onClick={() => setActivePlan(p)}
-                className={`px-4 py-2 text-xs font-mono uppercase tracking-wider transition-colors rounded ${activePlan === p ? 'bg-d360-ink text-white font-bold' : 'bg-white border border-stone-300 text-stone-600 hover:border-stone-500'}`}
-              >
-                {p}
-              </button>
+    <section className="bg-d360-surface py-16 lg:py-24">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="mb-10">
+          <p className="text-d360-primary text-xs font-mono tracking-widest mb-4">NEARBY</p>
+          <h2 className="font-display text-3xl md:text-4xl text-d360-ink leading-tight mb-6">Keep Exploring</h2>
+          <div className="flex gap-2 flex-wrap">
+            {filters.map(f => (
+              <button key={f} onClick={() => setFilter(f)} className={`px-4 py-1.5 text-xs font-mono tracking-wider border transition-colors ${filter === f ? 'bg-d360-primary text-white border-d360-primary' : 'bg-transparent text-d360-muted border-d360-border hover:text-d360-ink'}`} style={{ borderRadius: '2px' }}>{f}</button>
             ))}
           </div>
         </div>
-        <div className="flex flex-col gap-6">
-          {itineraries[activePlan].map(day => (
-            <div key={day.day} className="bg-white border border-stone-200 rounded p-6 shadow-xs">
-              <h3 className="font-display text-lg font-bold text-d360-ink mb-4 pb-2 border-b border-stone-100 flex items-center justify-between">
-                <span>DAY {day.day} TIMELINE</span>
-                <span className="text-xs font-mono font-normal text-d360-muted">{activePlan}</span>
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {day.schedule.map((item, idx) => (
-                  <div key={idx} className="flex gap-3 p-3 bg-stone-50/70 border border-stone-200/60 rounded">
-                    <span className="font-mono text-xs font-bold text-d360-primary whitespace-nowrap">{item.time}</span>
-                    <div className="flex flex-col gap-0.5">
-                      <span className="text-xs font-semibold text-d360-ink">{item.place}</span>
-                      <span className="text-[11px] text-d360-muted">Duration: {item.duration} &nbsp;|&nbsp; Area: {item.distance}</span>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-5">
+          {(shown.length > 0 ? shown : destination.nearbyPlaces).map((place) => (
+            <div key={place.name} className="group border border-d360-border bg-white hover:border-d360-muted transition-colors cursor-pointer" style={{ borderRadius: '2px' }}>
+              <div className="overflow-hidden relative" style={{ height: '160px' }}>
+                <img src={place.image} alt={place.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                <div className="absolute top-2 right-2 bg-black/60 text-white text-xs font-mono px-2 py-1">{place.distance}</div>
+              </div>
+              <div className="p-4">
+                <h3 className="font-display text-sm text-d360-ink mb-1">{place.name}</h3>
+                <p className="text-xs text-d360-muted">{place.type}</p>
+                <div className="flex items-center gap-1 mt-3 text-xs text-d360-muted"><IconClock />{place.travelTime}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── How To Reach ─────────────────────────────────────────────────────────────
+
+function HowToReach({ destination }: { destination: Destination }) {
+  const modes = [
+    { label: 'By Air', icon: <IconPlane />, key: 'air', main: destination.travel.air.airport || '', detail: `${destination.travel.air.distance} · ${destination.travel.air.time}` },
+    { label: 'By Rail', icon: <IconTrain />, key: 'rail', main: destination.travel.rail.station || '', detail: destination.travel.rail.time },
+    { label: 'By Road', icon: <IconCar />, key: 'road', main: destination.travel.road.highway || '', detail: `${destination.travel.road.distance} · ${destination.travel.road.time}` }
+  ]
+  return (
+    <section className="bg-d360-bg py-16 lg:py-24">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="mb-10">
+          <p className="text-d360-primary text-xs font-mono tracking-widest mb-4">TRAVEL</p>
+          <h2 className="font-display text-3xl md:text-4xl text-d360-ink leading-tight">How to Reach {destination.name}</h2>
+        </div>
+        <div className="grid md:grid-cols-3 gap-5">
+          {modes.map((mode) => (
+            <div key={mode.key} className="border border-d360-border bg-white p-8 hover:border-d360-muted transition-colors" style={{ borderRadius: '2px' }}>
+              <div className="w-12 h-12 bg-d360-surface flex items-center justify-center text-d360-primary mb-6" style={{ borderRadius: '2px' }}>{mode.icon}</div>
+              <h3 className="font-display text-xl text-d360-ink mb-2">{mode.label}</h3>
+              <p className="font-medium text-d360-ink/80 text-sm mb-3">{mode.main}</p>
+              <p className="text-sm text-d360-muted leading-relaxed">{mode.detail}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── Where To Stay ────────────────────────────────────────────────────────────
+
+function WhereToStay({ destination }: { destination: Destination }) {
+  const [activeType, setActiveType] = useState(destination.stay.categories[0].type)
+  const active = destination.stay.categories.find(c => c.type === activeType)!
+  return (
+    <section className="bg-d360-surface py-16 lg:py-24">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="mb-10">
+          <p className="text-d360-primary text-xs font-mono tracking-widest mb-4">ACCOMMODATION</p>
+          <h2 className="font-display text-3xl md:text-4xl text-d360-ink leading-tight">Where to Stay</h2>
+        </div>
+        <div className="flex gap-2 flex-wrap mb-8">
+          {destination.stay.categories.map(cat => (
+            <button key={cat.type} onClick={() => setActiveType(cat.type)} className={`px-4 py-2 text-xs font-mono tracking-wider border transition-colors ${activeType === cat.type ? 'bg-d360-primary text-white border-d360-primary' : 'bg-white text-d360-muted border-d360-border hover:text-d360-ink'}`} style={{ borderRadius: '2px' }}>{cat.type.toUpperCase()}</button>
+          ))}
+        </div>
+        <div className="border border-d360-border bg-white p-8" style={{ borderRadius: '2px' }}>
+          <div className="flex items-start justify-between mb-6">
+            <div>
+              <h3 className="font-display text-2xl text-d360-ink">{active.type}</h3>
+              <p className="text-d360-primary font-mono text-sm mt-1">{active.range}</p>
+            </div>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {active.options.map((opt, i) => (
+              <div key={i} className="flex items-center gap-3 p-3 bg-d360-surface border border-d360-border text-sm text-d360-ink" style={{ borderRadius: '2px' }}>
+                <span className="w-1.5 h-1.5 bg-d360-primary shrink-0" style={{ borderRadius: '50%' }} />
+                {opt}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── Best Time Calendar ───────────────────────────────────────────────────────
+
+function BestTime({ destination }: { destination: Destination }) {
+  const colorMap = { ideal: 'bg-d360-ideal text-white', good: 'bg-d360-good text-white', avoid: 'bg-d360-avoid text-white' }
+  return (
+    <section className="bg-d360-bg py-16 lg:py-24">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="mb-10">
+          <p className="text-d360-primary text-xs font-mono tracking-widest mb-4">WHEN TO GO</p>
+          <h2 className="font-display text-3xl md:text-4xl text-d360-ink leading-tight">Best Time to Visit</h2>
+        </div>
+        <div className="grid grid-cols-6 md:grid-cols-12 gap-2 mb-6">
+          {destination.bestTime.months.map((m) => (
+            <div key={m.month} className={`flex flex-col items-center py-3 px-1 ${colorMap[m.status]}`} style={{ borderRadius: '2px' }}>
+              <span className="font-mono text-xs font-medium">{m.month}</span>
+            </div>
+          ))}
+        </div>
+        <div className="flex items-center gap-6">
+          {(['ideal', 'good', 'avoid'] as const).map(status => (
+            <div key={status} className="flex items-center gap-2">
+              <div className={`w-3 h-3 ${colorMap[status]}`} style={{ borderRadius: '2px' }} />
+              <span className="text-xs text-d360-muted capitalize">{status}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── Budget Guide ─────────────────────────────────────────────────────────────
+
+function BudgetGuide({ destination }: { destination: Destination }) {
+  const [activeTier, setActiveTier] = useState(0)
+  const tier = destination.budget.tiers[activeTier]
+  return (
+    <section className="bg-d360-surface py-16 lg:py-24">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="mb-10">
+          <p className="text-d360-primary text-xs font-mono tracking-widest mb-4">TRIP COST</p>
+          <h2 className="font-display text-3xl md:text-4xl text-d360-ink leading-tight">Budget Guide</h2>
+        </div>
+        <div className="grid md:grid-cols-3 gap-3 mb-8">
+          {destination.budget.tiers.map((t, i) => (
+            <button key={t.tier} onClick={() => setActiveTier(i)} className={`p-6 text-left border transition-colors ${activeTier === i ? 'bg-d360-primary border-d360-primary text-white' : 'bg-white border-d360-border hover:border-d360-muted text-d360-ink'}`} style={{ borderRadius: '2px' }}>
+              <p className={`text-xs font-mono tracking-widest mb-2 ${activeTier === i ? 'text-white/70' : 'text-d360-muted'}`}>{t.tier.toUpperCase()}</p>
+              <p className="font-display text-xl">{t.perDay}</p>
+              <p className={`text-xs mt-1 ${activeTier === i ? 'text-white/60' : 'text-d360-muted'}`}>per day</p>
+            </button>
+          ))}
+        </div>
+        <div className="border border-d360-border bg-white p-8" style={{ borderRadius: '2px' }}>
+          <h3 className="font-display text-xl text-d360-ink mb-6">Breakdown — {tier.tier}</h3>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            {tier.breakdown.map(item => (
+              <div key={item.category} className="p-4 bg-d360-surface border border-d360-border" style={{ borderRadius: '2px' }}>
+                <p className="text-xs font-mono text-d360-muted mb-1.5">{item.category.toUpperCase()}</p>
+                <p className="font-display text-base text-d360-ink">{item.amount}</p>
+              </div>
+            ))}
+          </div>
+          <button className="mt-8 flex items-center gap-2 px-6 py-3 bg-d360-primary text-white text-sm font-medium hover:bg-d360-primary/90 transition-colors" style={{ borderRadius: '2px' }}>Plan My Budget <IconArrowRight /></button>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── Itineraries ─────────────────────────────────────────────────────────────
+
+function Itineraries({ destination }: { destination: Destination }) {
+  const durations = Object.keys(destination.itineraries)
+  const [active, setActive] = useState(durations[0])
+  const days = destination.itineraries[active]
+  return (
+    <section className="bg-d360-bg py-16 lg:py-24">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="mb-10">
+          <p className="text-d360-primary text-xs font-mono tracking-widest mb-4">TRIP PLANNING</p>
+          <h2 className="font-display text-3xl md:text-4xl text-d360-ink leading-tight mb-6">Plan Your {destination.name} Trip</h2>
+          <div className="flex gap-2">
+            {durations.map(d => (
+              <button key={d} onClick={() => setActive(d)} className={`px-5 py-2 text-xs font-mono tracking-wider border transition-colors ${active === d ? 'bg-d360-primary text-white border-d360-primary' : 'bg-transparent text-d360-muted border-d360-border hover:text-d360-ink'}`} style={{ borderRadius: '2px' }}>{d.toUpperCase()}</button>
+            ))}
+          </div>
+        </div>
+        <div className="grid lg:grid-cols-2 gap-8">
+          {days.map((day) => (
+            <div key={day.day} className="border border-d360-border bg-white p-6" style={{ borderRadius: '2px' }}>
+              <p className="font-mono text-xs tracking-widest text-d360-primary mb-5">DAY {day.day}</p>
+              <div className="relative pl-16">
+                <div className="absolute left-6 top-0 bottom-0 w-px bg-d360-border" />
+                {day.schedule.map((item, i) => (
+                  <div key={i} className="relative mb-5 last:mb-0">
+                    <div className="absolute -left-10 top-1 w-2 h-2 rounded-full bg-d360-surface border-2 border-d360-primary" />
+                    <p className="font-mono text-xs text-d360-muted mb-0.5">{item.time}</p>
+                    <p className="font-medium text-d360-ink text-sm">{item.place}</p>
+                    <div className="flex items-center gap-4 mt-1">
+                      <span className="text-xs text-d360-muted flex items-center gap-1"><IconClock />{item.duration}</span>
+                      {item.distance && <span className="text-xs text-d360-muted flex items-center gap-1"><IconMapPin />{item.distance}</span>}
                     </div>
                   </div>
                 ))}
@@ -1074,187 +888,178 @@ function ItinerarySection({ itineraries }: { itineraries: Destination['itinerari
             </div>
           ))}
         </div>
+        <button className="mt-8 flex items-center gap-2 px-6 py-3 bg-d360-primary text-white text-sm font-medium hover:bg-d360-primary/90 transition-colors" style={{ borderRadius: '2px' }}>Use This Plan <IconArrowRight /></button>
       </div>
     </section>
   )
 }
 
-// ─── How to Reach & Logistics ─────────────────────────────────────────────────
+// ─── Local Experiences ────────────────────────────────────────────────────────
 
-function TravelSection({ travel }: { travel: Destination['travel'] }) {
+function LocalExperiences({ destination }: { destination: Destination }) {
   return (
-    <section className="py-16 px-6 lg:px-12 max-w-7xl mx-auto">
-      <div className="flex flex-col gap-2 mb-10">
-        <span className="text-xs font-mono font-bold tracking-widest text-d360-primary uppercase">CONNECTIVITY & TRANSIT</span>
-        <h2 className="font-display text-3xl font-light text-d360-ink">How to Reach Chuka Beach</h2>
-        <p className="text-sm text-d360-muted max-w-xl">Smooth multi-modal connectivity from Bareilly, Lucknow, and New Delhi.</p>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white border border-d360-border p-5 rounded flex flex-col gap-3">
-          <div className="w-10 h-10 rounded-full bg-blue-50 text-blue-700 flex items-center justify-center">
-            <IconPlane />
-          </div>
-          <h3 className="font-display text-base font-semibold text-d360-ink">By Air</h3>
-          <p className="text-xs text-d360-muted flex-1 leading-relaxed">
-            <strong>Nearest:</strong> {travel.air.airport}<br />
-            <strong>Distance:</strong> {travel.air.distance}<br />
-            <strong>Travel Time:</strong> {travel.air.time}
-          </p>
+    <section className="bg-d360-surface py-16 lg:py-24">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="mb-10">
+          <p className="text-d360-primary text-xs font-mono tracking-widest mb-4">EXPERIENCES</p>
+          <h2 className="font-display text-3xl md:text-4xl text-d360-ink leading-tight">Local Experiences</h2>
         </div>
-        <div className="bg-white border border-d360-border p-5 rounded flex flex-col gap-3">
-          <div className="w-10 h-10 rounded-full bg-amber-50 text-amber-700 flex items-center justify-center">
-            <IconTrain />
-          </div>
-          <h3 className="font-display text-base font-semibold text-d360-ink">By Train</h3>
-          <p className="text-xs text-d360-muted flex-1 leading-relaxed">
-            <strong>Stations:</strong> {travel.rail.station}<br />
-            <strong>Distance:</strong> {travel.rail.distance}<br />
-            <strong>Details:</strong> {travel.rail.time}
-          </p>
-        </div>
-        <div className="bg-white border border-d360-border p-5 rounded flex flex-col gap-3">
-          <div className="w-10 h-10 rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center">
-            <IconCar />
-          </div>
-          <h3 className="font-display text-base font-semibold text-d360-ink">By Road</h3>
-          <p className="text-xs text-d360-muted flex-1 leading-relaxed">
-            <strong>Highway:</strong> {travel.road.highway}<br />
-            <strong>Approach:</strong> {travel.road.distance}<br />
-            <strong>Route Note:</strong> {travel.road.time}
-          </p>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {destination.experiences.map((exp) => (
+            <div key={exp.title} className="group border border-d360-border bg-white hover:border-d360-muted transition-colors" style={{ borderRadius: '2px' }}>
+              <div className="overflow-hidden" style={{ height: '180px' }}>
+                <img src={exp.image} alt={exp.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              </div>
+              <div className="p-5">
+                <span className="text-[10px] font-mono tracking-widest text-d360-primary">{exp.category.toUpperCase()}</span>
+                <h3 className="font-display text-base text-d360-ink mt-1 mb-4">{exp.title}</h3>
+                <div className="flex justify-between items-center text-xs text-d360-muted border-t border-d360-border pt-3">
+                  <span className="flex items-center gap-1"><IconClock />{exp.duration}</span>
+                  <span className="font-mono text-d360-primary">{exp.price}</span>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
   )
 }
 
-// ─── Visiting Guidelines & Safety Rules ───────────────────────────────────────
+// ─── Map Section ──────────────────────────────────────────────────────────────
 
-function GuidelinesSection() {
+function MapSection({ destination }: { destination: Destination }) {
+  const [activeFilter, setActiveFilter] = useState('All')
+  const filters = ['All', 'Attractions', 'Food', 'Hidden Gems', 'Stay', 'Experiences']
   return (
-    <section id="guidelines" className="bg-amber-50/60 border-y border-amber-200/80 py-16 px-6 lg:px-12">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col gap-2 mb-8">
-          <span className="text-xs font-mono font-bold tracking-widest text-amber-900 uppercase">OFFICIAL FOREST ADVISORY</span>
-          <h2 className="font-display text-3xl font-light text-d360-ink">Visiting Guidelines, Permits & Safety</h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs text-stone-800">
-          <div className="p-5 bg-white border border-amber-200 rounded flex flex-col gap-2">
-            <h4 className="font-mono text-sm font-bold text-emerald-800 uppercase flex items-center gap-1.5">
-              <span>✅</span> DO'S (BEST PRACTICES)
-            </h4>
-            <ul className="list-disc pl-5 space-y-1.5 text-stone-700 leading-relaxed">
-              <li>Book your entry permit and vehicle pass in advance through the official UP Ecotourism portal.</li>
-              <li>Carry original government ID (Aadhaar, Passport, or Voter ID) matching permit details.</li>
-              <li>Wear muted, earth-toned clothes (khaki, olive, brown) to avoid alarming wild animals.</li>
-              <li>Maintain strict silence and follow all directions given by official forest naturalists and drivers.</li>
-              <li>Carry sufficient physical cash as digital UPI gateways frequently drop inside forest zones.</li>
-            </ul>
-          </div>
-          <div className="p-5 bg-white border border-amber-200 rounded flex flex-col gap-2">
-            <h4 className="font-mono text-sm font-bold text-rose-800 uppercase flex items-center gap-1.5">
-              <span>❌</span> DON'TS (STRICTLY PROHIBITED)
-            </h4>
-            <ul className="list-disc pl-5 space-y-1.5 text-stone-700 leading-relaxed">
-              <li>No plastic bags, bottles, or littering inside the tiger reserve boundaries.</li>
-              <li>No loud music, car stereos, shouting, or flash photography during safari excursions.</li>
-              <li>No consumption of alcohol or smoking inside the forest reserve premises.</li>
-              <li>Do NOT step into deep waters of the Sharda Sagar Dam due to unseen currents and crocodiles.</li>
-              <li>Do NOT step out of the safari vehicle under any circumstance inside the tiger tracking zone.</li>
-            </ul>
+    <section className="bg-d360-bg py-16 lg:py-24">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="mb-8">
+          <p className="text-d360-primary text-xs font-mono tracking-widest mb-4">INTERACTIVE MAP</p>
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <h2 className="font-display text-3xl md:text-4xl text-d360-ink leading-tight">{destination.name} on the Map</h2>
+            <button className="flex items-center gap-2 text-sm font-medium text-d360-primary hover:gap-3 transition-all whitespace-nowrap">View Full Map <IconArrowRight /></button>
           </div>
         </div>
-        <div className="mt-6 p-4 bg-white border border-amber-300 rounded flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-amber-100 text-amber-900 rounded"><IconPhone /></div>
-            <div>
-              <span className="font-mono text-xs font-bold text-stone-900">PILIBHIT TIGER RESERVE CONTROL ROOM / HELPLINE:</span>
-              <p className="text-xs text-stone-600">+91-8920707042 / +91-8700245593 (Mustafabad Range Office)</p>
+        <div className="flex gap-2 flex-wrap mb-4">
+          {filters.map(f => (
+            <button key={f} onClick={() => setActiveFilter(f)} className={`px-3 py-1 text-xs font-mono tracking-wider border transition-colors ${activeFilter === f ? 'bg-d360-primary text-white border-d360-primary' : 'bg-white text-d360-muted border-d360-border hover:text-d360-ink'}`} style={{ borderRadius: '2px' }}>{f.toUpperCase()}</button>
+          ))}
+        </div>
+        <div className="relative border border-d360-border bg-d360-surface overflow-hidden" style={{ height: '420px', borderRadius: '2px' }}>
+          <img src="https://images.unsplash.com/photo-1663089551295-cee8e58807a0?w=1200&h=600&fit=crop&auto=format" alt={`Map of ${destination.name}`} className="w-full h-full object-cover opacity-40" />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-d360-primary/10 border border-d360-primary/30 flex items-center justify-center mx-auto mb-3" style={{ borderRadius: '50%' }}>
+                <IconMapPin />
+              </div>
+              <p className="font-display text-xl text-d360-ink">{destination.name}</p>
+              <p className="text-sm text-d360-muted mt-1">{destination.state}, {destination.country}</p>
             </div>
           </div>
-          <span className="text-[11px] font-mono text-amber-900 bg-amber-100/80 px-3 py-1.5 rounded">Police: Madhotanda & Puranpur Police Station</span>
+          {/* Map pins */}
+          {[{ top: '35%', left: '45%', label: 'Chuka Beach' }, { top: '42%', left: '38%', label: 'Mustafabad Gate' }, { top: '28%', left: '52%', label: 'Sharda Sagar Dam' }].map(pin => (
+            <div key={pin.label} className="absolute group cursor-pointer" style={{ top: pin.top, left: pin.left }}>
+              <div className="w-3 h-3 bg-d360-primary border-2 border-white shadow-md" style={{ borderRadius: '50%' }} />
+              <div className="absolute bottom-5 left-1/2 -translate-x-1/2 bg-d360-ink text-white text-xs px-2 py-1 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity" style={{ borderRadius: '2px' }}>{pin.label}</div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
   )
 }
 
-// ─── FAQ Accordion ────────────────────────────────────────────────────────────
+// ─── Ask D360 ─────────────────────────────────────────────────────────────────
 
-function FAQSection() {
-  const [openIdx, setOpenIdx] = useState<number | null>(0)
-  const faqs = [
-    {
-      q: "Is Chuka Beach a natural ocean beach?",
-      a: "No, Chuka Beach is an inland freshwater forest beach situated on the white sand banks of the 22-km Sharda Sagar Dam reservoir inside Pilibhit Tiger Reserve. It has soft sands and gentle waves, offering a coastal vibe in the midst of deep Terai jungles."
-    },
-    {
-      q: "How can I book an official tree house or Tharu hut at Chuka Beach?",
-      a: "All forest accommodation is managed exclusively by the Uttar Pradesh Forest Department and must be booked online through the official UP Ecotourism portal (upecotourism.in). Tree houses and bamboo huts range from ₹2,400 to ₹7,600 per night."
-    },
-    {
-      q: "What is the best time to visit Chuka Beach?",
-      a: "The ideal months are November to March when temperatures are pleasant (10°C to 24°C) and tens of thousands of migratory birds arrive from Central Asia and Siberia. The tiger reserve officially closes for tourism during the monsoon season (mid-June to October)."
-    },
-    {
-      q: "Can we swim in the water at Chuka Beach?",
-      a: "Swimming is strictly prohibited due to deep drop-offs, underwater currents, and the presence of freshwater wildlife such as marsh mugger crocodiles. Visitors can enjoy paddle boating and boat safaris under supervised forest safety measures."
-    },
-    {
-      q: "What are the timings and entry fees for Chuka Beach?",
-      a: "Day visitors can enter from 07:00 AM to 05:00 PM with an entry ticket of ₹100 per person. Safari gypsies cost ₹3,600 to ₹4,500 per vehicle (inclusive of mandatory guide and driver)."
-    }
-  ]
+function AskD360({ destination }: { destination: Destination }) {
+  const [input, setInput] = useState('')
+  const [selected, setSelected] = useState<string | null>(null)
+  const [answered, setAnswered] = useState(false)
+  const handlePrompt = (prompt: string) => { setSelected(prompt); setInput(prompt); setTimeout(() => setAnswered(true), 600) }
   return (
-    <section className="py-16 px-6 lg:px-12 max-w-4xl mx-auto">
-      <div className="flex flex-col gap-2 mb-8 text-center">
-        <span className="text-xs font-mono font-bold tracking-widest text-d360-primary uppercase">FREQUENTLY ASKED QUESTIONS</span>
-        <h2 className="font-display text-3xl font-light text-d360-ink">Everything You Need to Know</h2>
-      </div>
-      <div className="flex flex-col gap-3">
-        {faqs.map((faq, idx) => (
-          <div key={idx} className="border border-d360-border bg-white rounded overflow-hidden">
-            <button
-              onClick={() => setOpenIdx(openIdx === idx ? null : idx)}
-              className="w-full text-left px-5 py-4 flex items-center justify-between gap-4 hover:bg-stone-50 transition-colors"
-            >
-              <span className="font-display text-base font-semibold text-d360-ink">{faq.q}</span>
-              <span className={`transform transition-transform ${openIdx === idx ? 'rotate-180' : ''}`}><IconChevronDown /></span>
-            </button>
-            {openIdx === idx && (
-              <div className="px-5 pb-4 text-xs text-d360-muted leading-relaxed border-t border-d360-border/50 pt-3">
-                {faq.a}
+    <section className="bg-d360-ink py-16 lg:py-24">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="grid lg:grid-cols-2 gap-16 items-start">
+          <div>
+            <p className="text-d360-primary text-xs font-mono tracking-widest mb-4">AI TRAVEL ASSISTANT</p>
+            <h2 className="font-display text-3xl md:text-4xl text-white leading-tight mb-4">Ask D360</h2>
+            <p className="text-white/50 text-sm leading-relaxed mb-8">Your intelligent guide to {destination.name}. Ask anything about history, food, hidden gems, travel planning or local experiences.</p>
+            <div className="flex flex-col gap-2">
+              {destination.aiPrompts.map((prompt, i) => (
+                <button key={i} onClick={() => handlePrompt(prompt)} className={`text-left px-4 py-3 text-sm border transition-colors ${selected === prompt ? 'bg-d360-primary border-d360-primary text-white' : 'bg-white/5 border-white/10 text-white/70 hover:border-white/30 hover:text-white'}`} style={{ borderRadius: '2px' }}>
+                  "{prompt}"
+                </button>
+              ))}
+              <button className="flex items-center gap-2 mt-2 text-white/40 text-xs font-medium hover:text-white/70 transition-colors">
+                <IconMic /> Ask in Hindi
+              </button>
+            </div>
+          </div>
+          <div className="border border-white/10 bg-white/5 p-6" style={{ borderRadius: '2px' }}>
+            <div className="flex items-center gap-3 mb-6 pb-4 border-b border-white/10">
+              <div className="w-8 h-8 bg-d360-primary flex items-center justify-center text-white text-xs font-display" style={{ borderRadius: '50%' }}>D</div>
+              <div>
+                <p className="font-medium text-white text-sm">D360 Travel Guide</p>
+                <p className="text-white/40 text-xs">Always available</p>
+              </div>
+            </div>
+            {!answered ? (
+              <div className="min-h-[200px] flex items-center justify-center">
+                <p className="text-white/30 text-sm text-center">Select a prompt or type your question to begin your {destination.name} discovery.</p>
+              </div>
+            ) : (
+              <div className="min-h-[200px]">
+                <div className="bg-d360-primary/20 border border-d360-primary/30 p-4 mb-4" style={{ borderRadius: '2px' }}>
+                  <p className="text-white/80 text-sm">"{selected}"</p>
+                </div>
+                <div className="p-4 bg-white/5 border border-white/10 text-white/75 text-sm leading-relaxed" style={{ borderRadius: '2px' }}>
+                  {selected?.includes('tree house') && `Official forest tree houses and Tharu bamboo huts must be booked online at upecotourism.in. Tariffs range from ₹2,400 to ₹7,600/night. Book at least 2–3 weeks early for winter peak season.`}
+                  {selected?.includes('wildlife') && `Mustafabad range is home to Royal Bengal tigers, leopards, sloth bears, swamp deer (barasingha), and over 326 species of birds. Morning safaris (06:30 AM) have the highest big cat sighting probabilities.`}
+                  {selected?.includes('road') && `From Bareilly, take State Highway 30 via Nawabganj and Madhotanda (~75 km, 2 hrs). From Lucknow, take NH-30 or Sitapur highway (~260 km, 5 hrs). The final stretch passes through scenic Sal forest canopy.`}
+                  {selected?.includes('family') && `For families, stay in an elevated tree house, take a calm water paddle boat on Sharda Sagar Dam, enjoy the Canopy Watchtower bird views, and relish rustic Bajra Roti with Saag at the forest canteen.`}
+                  {selected?.includes('61-foot') && `Pilibhit is India's 'Bansuri Nagari', handcrafting over 90% of India's bamboo flutes. In 2021, local master artisans crafted a 61-foot flute, entering the Guinness World Record, proudly installed at Bansuri Chowk.`}
+                  {selected?.includes('rukne') && `चुका बीच पर रुकने के लिए उत्तर प्रदेश वन विभाग के ट्री हाउस और थारू हट्स upecotourism.in पोर्टल से ऑनलाइन बुक होते हैं। बुकिंग पहले से कराना आवश्यक है।`}
+                </div>
               </div>
             )}
+            <div className="mt-4 flex items-center gap-2 border-t border-white/10 pt-4">
+              <input value={input} onChange={e => setInput(e.target.value)} placeholder={`Ask about ${destination.name}...`} className="flex-1 bg-transparent text-white/70 text-sm outline-none placeholder-white/30" />
+              <button onClick={() => { if(input) handlePrompt(input) }} className="p-2 bg-d360-primary text-white text-xs hover:bg-d360-primary/80 transition-colors" style={{ borderRadius: '2px' }}><IconArrowRight /></button>
+            </div>
           </div>
-        ))}
+        </div>
       </div>
     </section>
   )
 }
 
-// ─── Reviews & Testimonials ───────────────────────────────────────────────────
+// ─── Community Stories ────────────────────────────────────────────────────────
 
-function ReviewsSection({ reviews }: { reviews: Review[] }) {
+function CommunityStories({ destination }: { destination: Destination }) {
   return (
-    <section className="bg-stone-100 py-16 px-6 lg:px-12 border-t border-stone-200">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col gap-2 mb-8">
-          <span className="text-xs font-mono font-bold tracking-widest text-d360-primary uppercase">VISITOR REFLECTIONS</span>
-          <h2 className="font-display text-3xl font-light text-d360-ink">Verified Traveler Testimonials</h2>
+    <section className="bg-d360-bg py-16 lg:py-24">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="mb-10">
+          <p className="text-d360-primary text-xs font-mono tracking-widest mb-4">COMMUNITY</p>
+          <h2 className="font-display text-3xl md:text-4xl text-d360-ink leading-tight">Travelers of D360</h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {reviews.map((rev, idx) => (
-            <div key={idx} className="bg-white border border-stone-200 p-6 rounded flex flex-col justify-between gap-4 shadow-xs">
-              <p className="text-sm italic text-stone-700 leading-relaxed font-serif">"{rev.text}"</p>
-              <div className="flex items-center gap-3 pt-3 border-t border-stone-100">
-                <img src={rev.image} alt={rev.name} className="w-10 h-10 rounded-full object-cover" />
-                <div className="flex flex-col">
-                  <span className="text-xs font-bold text-d360-ink">{rev.name}</span>
-                  <span className="text-[11px] text-d360-muted">{rev.location} &nbsp;•&nbsp; {rev.date}</span>
+        <div className="grid md:grid-cols-3 gap-5">
+          {destination.reviews.map((review, i) => (
+            <div key={i} className="border border-d360-border bg-white p-6 hover:border-d360-muted transition-colors" style={{ borderRadius: '2px' }}>
+              <div className="flex items-center gap-1 mb-4">
+                {Array.from({ length: 5 }).map((_, j) => (
+                  <span key={j} className={j < review.rating ? 'text-d360-amber' : 'text-d360-border'}><IconStar filled={j < review.rating} /></span>
+                ))}
+              </div>
+              <p className="text-d360-ink/80 text-sm leading-relaxed mb-6">{review.text}</p>
+              <div className="flex items-center gap-3 pt-4 border-t border-d360-border">
+                <div className="w-9 h-9 rounded-full overflow-hidden bg-d360-surface shrink-0">
+                  <img src={review.image} alt={review.name} className="w-full h-full object-cover" />
                 </div>
-                <div className="ml-auto flex text-amber-500 text-xs">
-                  {'★'.repeat(rev.rating)}
+                <div>
+                  <p className="font-medium text-d360-ink text-sm">{review.name}</p>
+                  <p className="text-xs text-d360-muted">{review.location} · {review.date}</p>
                 </div>
               </div>
             </div>
@@ -1265,36 +1070,65 @@ function ReviewsSection({ reviews }: { reviews: Review[] }) {
   )
 }
 
-// ─── AI Prompts Section ───────────────────────────────────────────────────────
+// ─── Practical Info ───────────────────────────────────────────────────────────
 
-function AIPromptsSection({ prompts }: { prompts: string[] }) {
-  const [copied, setCopied] = useState<number | null>(null)
-  const handleCopy = (text: string, idx: number) => {
-    navigator.clipboard.writeText(text)
-    setCopied(idx)
-    setTimeout(() => setCopied(null), 2000)
-  }
+function PracticalInfo() {
+  const [openIndex, setOpenIndex] = useState<number | null>(null)
+  const items = [
+    { title: 'Permits & Booking', content: 'All tree houses, bamboo huts, and safari vehicles must be booked in advance via the official portal (upecotourism.in). Day visitor permits are issued at the Mustafabad entry check post (₹100/person). Carry original Govt ID proof.' },
+    { title: 'Safari Guidelines', content: 'Morning safari shift runs from 06:30 AM to 10:00 AM; afternoon shift from 02:30 PM to 05:30 PM. Gypsies cost ₹3,600 to ₹4,500 per vehicle including compulsory guide. Never step out of the vehicle inside tiger zones.' },
+    { title: 'Water Safety', content: 'Swimming or wading deep into Sharda Sagar reservoir is strictly prohibited due to deep drop-offs and the presence of freshwater wildlife like marsh crocodiles. Enjoy boating and shoreline walks safely.' },
+    { title: 'Dress & Wildlife Etiquette', content: 'Wear muted earth tones (khaki, olive, brown, dull green). Avoid bright neon colors, perfumes, and loud music. Maintain silence on safari and around the waterfront huts to avoid alarming wild animals.' },
+    { title: 'Emergency Contacts', content: 'Pilibhit Tiger Reserve Control Room: +91-8920707042 / +91-8700245593 · Police: 112 (Madhotanda & Puranpur Police Stations) · District Hospital Pilibhit: 05882-255102.' },
+    { title: 'Connectivity & Cash', content: 'Mobile network is erratic or absent inside deep forest zones. Carry sufficient physical cash as digital UPI gateways frequently drop. The park is closed for tourism during monsoon (mid-June to October).' }
+  ]
   return (
-    <section className="py-16 px-6 lg:px-12 max-w-7xl mx-auto">
-      <div className="bg-gradient-to-r from-emerald-950 to-stone-900 text-white rounded-lg p-8 shadow-sm">
-        <div className="flex flex-col gap-2 mb-6">
-          <span className="text-xs font-mono font-bold tracking-widest text-emerald-400 uppercase">AI TRAVEL COPILOT SEEDS</span>
-          <h2 className="font-display text-2xl font-light text-white">Ask Darshan360 AI About Chuka Beach</h2>
-          <p className="text-xs text-white/70 max-w-xl">Click to copy any prompt seed into your AI assistant for instant customized trip suggestions.</p>
+    <section className="bg-d360-surface py-16 lg:py-24">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="mb-10">
+          <p className="text-d360-primary text-xs font-mono tracking-widest mb-4">PRACTICAL</p>
+          <h2 className="font-display text-3xl md:text-4xl text-d360-ink leading-tight">Before You Go</h2>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {prompts.map((p, idx) => (
-            <div
-              key={idx}
-              onClick={() => handleCopy(p, idx)}
-              className="cursor-pointer bg-white/10 hover:bg-white/15 border border-white/10 p-3 rounded flex items-center justify-between gap-3 text-xs text-white/90 transition-colors"
-            >
-              <span>{p}</span>
-              <span className="text-[10px] font-mono text-emerald-300 whitespace-nowrap bg-emerald-900/60 px-2 py-1 rounded">
-                {copied === idx ? 'COPIED!' : 'CLICK TO COPY'}
-              </span>
+        <div className="max-w-2xl border border-d360-border divide-y divide-d360-border" style={{ borderRadius: '2px' }}>
+          {items.map((item, i) => (
+            <div key={i} className="bg-white">
+              <button onClick={() => setOpenIndex(openIndex === i ? null : i)} className="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-d360-surface/50 transition-colors">
+                <span className="font-medium text-d360-ink text-sm">{item.title}</span>
+                <span className={`text-d360-muted transition-transform ${openIndex === i ? 'rotate-180' : ''}`}><IconChevronDown /></span>
+              </button>
+              {openIndex === i && (
+                <div className="px-6 pb-5">
+                  <p className="text-sm text-d360-muted leading-relaxed">{item.content}</p>
+                </div>
+              )}
             </div>
           ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── Sources & Trust ──────────────────────────────────────────────────────────
+
+function SourcesTrust({ destination }: { destination: Destination }) {
+  return (
+    <section className="bg-d360-bg py-12 border-t border-d360-border">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="grid md:grid-cols-3 gap-8">
+          <div>
+            <p className="text-d360-muted text-[10px] font-mono tracking-widest mb-3">OFFICIAL SOURCES</p>
+            {destination.sources.official.map((s, i) => <p key={i} className="text-xs text-d360-muted mb-1.5">{s}</p>)}
+          </div>
+          <div>
+            <p className="text-d360-muted text-[10px] font-mono tracking-widest mb-3">HISTORICAL REFERENCES</p>
+            {destination.sources.historical.map((s, i) => <p key={i} className="text-xs text-d360-muted mb-1.5 italic">{s}</p>)}
+          </div>
+          <div>
+            <p className="text-d360-muted text-[10px] font-mono tracking-widest mb-3">VERIFICATION</p>
+            <p className="text-xs text-d360-muted">Last verified: <span className="text-d360-ink font-medium">{destination.sources.lastVerified}</span></p>
+            <p className="text-xs text-d360-muted mt-2">All information is cross-referenced with official tourism and archaeological sources.</p>
+          </div>
         </div>
       </div>
     </section>
@@ -1303,74 +1137,69 @@ function AIPromptsSection({ prompts }: { prompts: string[] }) {
 
 // ─── Footer ───────────────────────────────────────────────────────────────────
 
-function Footer({ sources }: { sources: Destination['sources'] }) {
+function Footer() {
+  const links = {
+    Explore: ['Destinations', 'Hidden Gems', 'Heritage Sites', 'Natural Places'],
+    Plan: ['Trip Planner', 'Itineraries', 'Budget Guide', 'Ask D360'],
+    Experiences: ['Local Tours', 'Food Trails', 'Craft Workshops', 'Heritage Walks'],
+    Company: ['About D360', 'EduFutura Technologies', 'Contact', 'Careers']
+  }
   return (
-    <footer className="bg-d360-dark text-white/80 border-t border-white/10 py-12 px-6 lg:px-12 text-xs">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-        <div className="flex flex-col gap-2">
-          <span className="font-display text-xl font-bold tracking-wider text-white">DARSHAN360</span>
-          <p className="text-white/60 text-[11px] leading-relaxed">
-            Preserving, exploring, and honoring the hidden ecotourism and cultural wonders of Uttar Pradesh.
-          </p>
-        </div>
-        <div className="flex flex-col gap-1.5">
-          <span className="font-mono text-[11px] font-bold text-white uppercase tracking-wider">OFFICIAL SOURCES</span>
-          {sources.official.map((s, idx) => (
-            <span key={idx} className="text-white/60">{s}</span>
+    <footer className="bg-d360-ink text-white">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-16 pb-12">
+        <div className="grid md:grid-cols-5 gap-10 mb-16">
+          <div className="md:col-span-1">
+            <p className="font-display text-2xl mb-2">D360</p>
+            <p className="text-white/40 text-sm leading-relaxed">Discover Beyond the Usual.</p>
+            <p className="text-white/25 text-xs mt-4 font-mono">An EduFutura Technologies product</p>
+          </div>
+          {Object.entries(links).map(([section, items]) => (
+            <div key={section}>
+              <p className="text-white/40 text-[10px] font-mono tracking-widest mb-4">{section.toUpperCase()}</p>
+              {items.map(item => <a key={item} href="#" className="block text-sm text-white/60 hover:text-white transition-colors mb-2">{item}</a>)}
+            </div>
           ))}
         </div>
-        <div className="flex flex-col gap-1.5">
-          <span className="font-mono text-[11px] font-bold text-white uppercase tracking-wider">RESEARCH REPOSITORIES</span>
-          {sources.historical.map((h, idx) => (
-            <span key={idx} className="text-white/60">{h}</span>
-          ))}
+        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between gap-4">
+          <p className="text-white/30 text-xs">© 2026 EduFutura Technologies Pvt Ltd. All rights reserved.</p>
+          <div className="flex gap-6">
+            {['Privacy', 'Terms', 'Cookies'].map(l => <a key={l} href="#" className="text-white/30 text-xs hover:text-white/60 transition-colors">{l}</a>)}
+          </div>
         </div>
-        <div className="flex flex-col gap-2">
-          <span className="font-mono text-[11px] font-bold text-white uppercase tracking-wider">VERIFICATION</span>
-          <span className="text-emerald-400 font-mono">Last Verified: {sources.lastVerified}</span>
-          <p className="text-white/50 text-[11px] mt-1">Data curated directly from UP Forest Dept, Pilibhit Tiger Reserve Administration, and District Gazetteers.</p>
-        </div>
-      </div>
-      <div className="max-w-7xl mx-auto pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between text-[11px] text-white/40 gap-3">
-        <span>© 2026 Navpravartak / Darshan360 • Ecotourism Division</span>
-        <span>Curated with authentic field data for Pilibhit Tiger Reserve</span>
       </div>
     </footer>
   )
 }
 
-// ─── Main App Component ───────────────────────────────────────────────────────
+// ─── Main App ─────────────────────────────────────────────────────────────────
 
 export default function App() {
-  const [savedList, setSavedList] = useState<string[]>([])
-  const toggleSave = (id: string) => {
-    setSavedList(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id])
-  }
-
   return (
-    <div className="min-h-screen bg-white text-d360-ink flex flex-col font-sans selection:bg-d360-primary selection:text-white">
+    <div className="bg-d360-bg font-sans">
       <Nav />
-      <main className="flex-1">
-        <Hero destination={chukaBeach} />
-        <QuickFactsRibbon facts={chukaBeach.quickFacts} />
-        <DiscoveryScoreSection score={chukaBeach.discoveryScore} />
-        <EditorialSection editorial={chukaBeach.editorial} />
-        <HighlightsGrid />
-        <AttractionsSection attractions={chukaBeach.attractions} savedList={savedList} toggleSave={toggleSave} />
-        <TreeHouseSection />
-        <WildlifeSafariSection />
-        <HiddenGemsSection gems={chukaBeach.hiddenGems} />
-        <HistorySection history={chukaBeach.history} />
-        <CultureSection culture={chukaBeach.culture} />
-        <FoodSection food={chukaBeach.food} />
-        <ItinerarySection itineraries={chukaBeach.itineraries} />
-        <TravelSection travel={chukaBeach.travel} />
-        <GuidelinesSection />
-        <FAQSection />
-        <ReviewsSection reviews={chukaBeach.reviews} />
-        <AIPromptsSection prompts={chukaBeach.aiPrompts} />
-      </main>
-      <Footer sources={chukaBeach.sources} />
+      <Hero destination={chukaBeach} />
+      <QuickFacts facts={chukaBeach.quickFacts} />
+      <WhyVisit destination={chukaBeach} />
+      <DestinationStory destination={chukaBeach} />
+      <HistoryTimeline destination={chukaBeach} />
+      <CultureGrid destination={chukaBeach} />
+      <FoodSection destination={chukaBeach} />
+      <AttractionsGrid destination={chukaBeach} />
+      <HiddenGems destination={chukaBeach} />
+      <ThingsToDo destination={chukaBeach} />
+      <NearbyPlaces destination={chukaBeach} />
+      <HowToReach destination={chukaBeach} />
+      <WhereToStay destination={chukaBeach} />
+      <BestTime destination={chukaBeach} />
+      <BudgetGuide destination={chukaBeach} />
+      <Itineraries destination={chukaBeach} />
+      <LocalExperiences destination={chukaBeach} />
+      <MapSection destination={chukaBeach} />
+      <AskD360 destination={chukaBeach} />
+      <CommunityStories destination={chukaBeach} />
+      <PracticalInfo />
+      <SourcesTrust destination={chukaBeach} />
+      <Footer />
     </div>
   )
 }
