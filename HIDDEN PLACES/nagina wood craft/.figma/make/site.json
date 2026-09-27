@@ -1,0 +1,10 @@
+{
+  "description": "This web application provides clear, step-by-step instructions for users, enhancing understanding and efficiency in completing tasks or projects.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
