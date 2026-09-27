@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-sans: 'Outfit', system-ui, sans-serif;
+  --font-mono: 'DM Mono', 'Courier New', monospace;
+
+  --color-d360-primary: #C05C28;
+  --color-d360-amber: #B8872A;
+  --color-d360-bg: #FAFAF7;
+  --color-d360-surface: #F1EBE0;
+  --color-d360-dark: #18181A;
+  --color-d360-ink: #2A2A26;
+  --color-d360-muted: #848478;
+  --color-d360-border: #E0D9CE;
+  --color-d360-ideal: #3A7D44;
+  --color-d360-good: #B8872A;
+  --color-d360-avoid: #B84040;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  font-family: 'Outfit', system-ui, sans-serif;
+  background-color: #FAFAF7;
+  color: #2A2A26;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #E0D9CE transparent;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
